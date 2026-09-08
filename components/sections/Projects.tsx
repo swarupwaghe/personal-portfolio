@@ -1,3 +1,5 @@
+"use client";
+
 import { projects } from '@/data/portfolio';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';

@@ -1,3 +1,5 @@
+"use client";
+
 import { personalInfo } from '@/data/portfolio';
 import { Button } from '@/components/ui/Button';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/ui/MotionWrappers';
