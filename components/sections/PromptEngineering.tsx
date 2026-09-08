@@ -1,9 +1,10 @@
 import { Card } from '@/components/ui/Card';
+import { FadeIn } from '@/components/ui/MotionWrappers';
 
 export function PromptEngineering() {
   return (
     <section id="prompt-engineering" className="section prompt-engineering-section">
-      <div className="container">
+      <FadeIn className="container">
         <h2>Exploring Prompt Engineering</h2>
         <p className="section-intro">
           I am interested in understanding how well-designed prompts can improve the quality and usefulness of AI-generated results.
@@ -17,7 +18,7 @@ export function PromptEngineering() {
             <span>REFINE</span>
           </div>
         </Card>
-      </div>
+      </FadeIn>
     </section>
   );
 }

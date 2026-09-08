@@ -1,10 +1,11 @@
 import { personalInfo } from '@/data/portfolio';
 import { Button } from '@/components/ui/Button';
+import { FadeIn } from '@/components/ui/MotionWrappers';
 
 export function Contact() {
   return (
     <section id="contact" className="section contact-section">
-      <div className="container">
+      <FadeIn className="container">
         <h2>Contact</h2>
         <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
           <div className="form-group">
@@ -21,7 +22,7 @@ export function Contact() {
           </div>
           <Button type="submit">Send Message</Button>
         </form>
-      </div>
+      </FadeIn>
     </section>
   );
 }

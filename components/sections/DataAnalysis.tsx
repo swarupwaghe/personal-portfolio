@@ -1,9 +1,10 @@
 import { Card } from '@/components/ui/Card';
+import { FadeIn } from '@/components/ui/MotionWrappers';
 
 export function DataAnalysis() {
   return (
     <section id="data-analysis" className="section data-analysis-section">
-      <div className="container">
+      <FadeIn className="container">
         <h2>Exploring Data Analysis</h2>
         <p className="section-intro">
           I am interested in transforming raw information into useful insights and learning how programming and AI can support data-driven decision making.
@@ -17,7 +18,7 @@ export function DataAnalysis() {
             <span>INSIGHTS</span>
           </div>
         </Card>
-      </div>
+      </FadeIn>
     </section>
   );
 }
