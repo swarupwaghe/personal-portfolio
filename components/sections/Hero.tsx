@@ -25,7 +25,7 @@ export function Hero() {
         </StaggerItem>
         <StaggerItem className="cta-group">
           <Button onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}>Explore My Projects</Button>
-          <Button variant="secondary" onClick={() => window.open(personalInfo.resumeUrl, '_blank')}>Download Resume</Button>
+          <Button variant="secondary" onClick={() => window.open(personalInfo.resumeUrl, '_blank')}>View Resume</Button>
         </StaggerItem>
       </StaggerContainer>
     </section>
