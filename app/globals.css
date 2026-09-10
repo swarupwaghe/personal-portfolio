@@ -1,18 +1,18 @@
 /* Global Design Tokens */
 :root {
   /* Color Palette */
-  --color-base: #f7fafc;
-  --color-surface: rgba(255, 255, 255, 0.6);
-  --color-surface-border: rgba(255, 255, 255, 0.3);
-  --color-text-primary: #1a202c;
-  --color-text-secondary: #4a5568;
+  --color-base: #f1f5f9;
+  --color-surface: rgba(255, 255, 255, 0.78);
+  --color-surface-border: rgba(255, 255, 255, 0.6);
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #334155;
   
   /* Accents */
-  --accent-blue: #3182ce;
-  --accent-purple: #805ad5;
-  --accent-pink: #d53f8c;
-  --accent-cyan: #00b5d8;
-  --accent-orange: #ed8936;
+  --accent-blue: #2563eb;
+  --accent-purple: #7c3aed;
+  --accent-pink: #db2777;
+  --accent-cyan: #0284c7;
+  --accent-orange: #ea580c;
 
   /* Spacing Scale */
   --space-1: 4px;
@@ -36,9 +36,9 @@
   /* Shared Properties */
   --radius-md: 12px;
   --radius-lg: 16px;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-  --shadow-hover: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -1px rgba(0,0,0,0.04);
+  --shadow-hover: 0 12px 20px -3px rgba(0,0,0,0.12), 0 4px 6px -2px rgba(0,0,0,0.05);
 }
 
 /* Reset & Base */
@@ -50,13 +50,15 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: var(--color-base);
 }
 
 body {
-  background-color: var(--color-base);
+  background-color: transparent;
   color: var(--color-text-primary);
   line-height: 1.6;
   font-family: inherit;
+  min-height: 100vh;
 }
 
 h1, h2, h3, h4 {
@@ -80,6 +82,14 @@ a:hover {
 }
 
 /* Layout Utilities */
+.relative {
+  position: relative;
+}
+
+.z-10 {
+  z-index: 10;
+}
+
 .container {
   width: 100%;
   max-width: 1100px;
