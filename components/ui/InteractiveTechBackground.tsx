@@ -112,17 +112,22 @@ export function InteractiveTechBackground() {
         overflow: 'hidden',
       }}
     >
-      {/* 1. Underlying Technical Artwork Background */}
+      {/* 1. Underlying Technical Artwork Background with Ambient Dark Vignette & Glow */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: `url('/images/bg-gears.png')`,
+          backgroundImage: `
+            radial-gradient(circle at 15% 35%, rgba(37, 99, 235, 0.12) 0%, transparent 55%),
+            radial-gradient(circle at 85% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 50% 10%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
+            url('/images/bg-gears.png')
+          `,
           backgroundSize: 'cover',
           backgroundPosition: 'left center',
           backgroundRepeat: 'no-repeat',
-          opacity: 0.82,
-          filter: 'contrast(1.04) brightness(1.02)',
+          opacity: 0.38,
+          filter: 'contrast(1.2) brightness(0.7) invert(0.05)',
         }}
       />
 
@@ -132,8 +137,8 @@ export function InteractiveTechBackground() {
           position: 'absolute',
           inset: 0,
           backgroundImage: `
-            linear-gradient(to right, rgba(99, 133, 172, 0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(99, 133, 172, 0.04) 1px, transparent 1px)
+            linear-gradient(to right, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(56, 189, 248, 0.04) 1px, transparent 1px)
           `,
           backgroundSize: '32px 32px',
         }}
@@ -149,7 +154,7 @@ export function InteractiveTechBackground() {
           height: '580px',
           y: shouldReduceMotion ? 0 : parallaxY,
           transformOrigin: 'bottom left',
-          opacity: 0.95,
+          opacity: 0.9,
         }}
       >
         <svg
@@ -159,30 +164,35 @@ export function InteractiveTechBackground() {
           style={{ overflow: 'visible' }}
         >
           <defs>
-            {/* Gear Drop Shadows */}
-            <filter id="gearGlow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="2" dy="4" stdDeviation="4" floodColor="#000000" floodOpacity="0.12" />
+            {/* Gear Drop Shadows & Subtle Tech Glows */}
+            <filter id="gearGlow" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="#38bdf8" floodOpacity="0.2" />
+              <feDropShadow dx="2" dy="6" stdDeviation="8" floodColor="#000000" floodOpacity="0.6" />
             </filter>
             <filter id="subtleShadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="1" dy="2" stdDeviation="3" floodColor="#000000" floodOpacity="0.08" />
+              <feDropShadow dx="1" dy="3" stdDeviation="4" floodColor="#000000" floodOpacity="0.4" />
             </filter>
             {/* Gradients */}
             <linearGradient id="mainGearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#ffffff" />
-              <stop offset="100%" stopColor="#e2e8f0" />
+              <stop offset="0%" stopColor="#334155" />
+              <stop offset="100%" stopColor="#1e293b" />
             </linearGradient>
             <linearGradient id="darkGearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#718096" />
-              <stop offset="100%" stopColor="#4a5568" />
+              <stop offset="0%" stopColor="#1e293b" />
+              <stop offset="100%" stopColor="#0f172a" />
             </linearGradient>
             <linearGradient id="blueGearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#7dd3fc" />
-              <stop offset="100%" stopColor="#38bdf8" />
+              <stop offset="0%" stopColor="#38bdf8" />
+              <stop offset="100%" stopColor="#0284c7" />
+            </linearGradient>
+            <linearGradient id="orangeGearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#fb923c" />
+              <stop offset="100%" stopColor="#ea580c" />
             </linearGradient>
           </defs>
 
           {/* Connected Circuit & Schematic Lines */}
-          <g stroke="#94a3b8" strokeWidth="1.2" strokeOpacity="0.45" fill="none">
+          <g stroke="#38bdf8" strokeWidth="1.2" strokeOpacity="0.3" fill="none">
             {/* Circuit traces */}
             <path d="M 120 400 L 250 400 L 290 440 L 390 440" />
             <path d="M 120 400 C 180 320 280 320 330 380" strokeDasharray="3 3" />
@@ -190,17 +200,17 @@ export function InteractiveTechBackground() {
             <path d="M 200 240 L 200 180 L 240 140 L 320 140" />
 
             {/* Orbiting HUD Arc Guide */}
-            <circle cx="120" cy="400" r="190" strokeDasharray="6 6" strokeOpacity="0.25" />
-            <circle cx="120" cy="400" r="230" strokeOpacity="0.2" />
+            <circle cx="120" cy="400" r="190" strokeDasharray="6 6" strokeOpacity="0.2" />
+            <circle cx="120" cy="400" r="230" strokeOpacity="0.15" />
 
             {/* Hexagonal Tech Decals */}
-            <polygon points="320,440 330,422 350,422 360,440 350,458 330,458" stroke="#64748b" strokeWidth="1.2" fill="rgba(255,255,255,0.7)" />
-            <polygon points="365,470 372,458 388,458 395,470 388,482 372,482" stroke="#94a3b8" strokeWidth="1" fill="rgba(255,255,255,0.5)" />
-            <polygon points="410,440 418,426 434,426 442,440 434,454 418,454" stroke="#cbd5e1" strokeWidth="1" fill="rgba(255,255,255,0.4)" />
+            <polygon points="320,440 330,422 350,422 360,440 350,458 330,458" stroke="#38bdf8" strokeWidth="1.2" fill="rgba(15, 23, 42, 0.7)" />
+            <polygon points="365,470 372,458 388,458 395,470 388,482 372,482" stroke="#818cf8" strokeWidth="1" fill="rgba(15, 23, 42, 0.5)" />
+            <polygon points="410,440 418,426 434,426 442,440 434,454 418,454" stroke="#64748b" strokeWidth="1" fill="rgba(15, 23, 42, 0.4)" />
           </g>
 
           {/* Node Connection Dots */}
-          <g fill="#1e293b">
+          <g fill="#38bdf8">
             <circle cx="250" cy="400" r="3.5" />
             <circle cx="290" cy="440" r="4.5" />
             <circle cx="390" cy="440" r="3.5" />
@@ -222,25 +232,25 @@ export function InteractiveTechBackground() {
               cy="400"
               r="150"
               fill="none"
-              stroke="#2c3e50"
-              strokeWidth="2"
+              stroke="#38bdf8"
+              strokeWidth="1.8"
               strokeDasharray="40 18 10 18"
-              strokeOpacity="0.4"
+              strokeOpacity="0.35"
             />
             {/* Arrowhead marker on HUD arc */}
             <polygon
               points="120,246 113,258 127,258"
-              fill="#1e293b"
+              fill="#38bdf8"
               transform="rotate(35 120 400)"
             />
             <polygon
               points="120,246 113,258 127,258"
-              fill="#1e293b"
+              fill="#38bdf8"
               transform="rotate(110 120 400)"
             />
             <polygon
               points="120,246 113,258 127,258"
-              fill="#1e293b"
+              fill="#38bdf8"
               transform="rotate(220 120 400)"
             />
           </motion.g>
@@ -258,17 +268,17 @@ export function InteractiveTechBackground() {
               cy="400"
               r="175"
               fill="none"
-              stroke="#475569"
+              stroke="#64748b"
               strokeWidth="1.5"
               strokeDasharray="70 25 15 25"
               strokeOpacity="0.35"
             />
             {/* Caliper ticks */}
-            <line x1="120" y1="220" x2="120" y2="230" stroke="#334155" strokeWidth="1.5" transform="rotate(20 120 400)" />
-            <line x1="120" y1="220" x2="120" y2="230" stroke="#334155" strokeWidth="1.5" transform="rotate(40 120 400)" />
-            <line x1="120" y1="220" x2="120" y2="230" stroke="#334155" strokeWidth="1.5" transform="rotate(60 120 400)" />
-            <line x1="120" y1="220" x2="120" y2="230" stroke="#334155" strokeWidth="1.5" transform="rotate(80 120 400)" />
-            <line x1="120" y1="220" x2="120" y2="230" stroke="#334155" strokeWidth="1.5" transform="rotate(100 120 400)" />
+            <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(20 120 400)" />
+            <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(40 120 400)" />
+            <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(60 120 400)" />
+            <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(80 120 400)" />
+            <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(100 120 400)" />
           </motion.g>
 
           {/* HUD Outer Track with Node */}
@@ -284,12 +294,12 @@ export function InteractiveTechBackground() {
               cy="400"
               r="205"
               fill="none"
-              stroke="#64748b"
+              stroke="#475569"
               strokeWidth="1"
               strokeDasharray="4 8"
               strokeOpacity="0.3"
             />
-            <circle cx="120" cy="195" r="4.5" fill="#334155" />
+            <circle cx="120" cy="195" r="4.5" fill="#38bdf8" />
           </motion.g>
 
           {/* 4. Orange Outlined Setting Gear (Top-Left Position: x=170, y=240) */}
@@ -304,7 +314,7 @@ export function InteractiveTechBackground() {
               {/* Outer Gear Outline */}
               <path
                 d={orangeGearPath}
-                fill="rgba(255, 237, 213, 0.4)"
+                fill="rgba(249, 115, 22, 0.15)"
                 stroke="#f97316"
                 strokeWidth="2.5"
                 strokeLinejoin="round"
@@ -312,7 +322,7 @@ export function InteractiveTechBackground() {
               />
               {/* Center decorative ring */}
               <circle cx="0" cy="0" r="12" fill="none" stroke="#f97316" strokeWidth="2" />
-              <circle cx="0" cy="0" r="4" fill="#f97316" />
+              <circle cx="0" cy="0" r="4" fill="#fb923c" />
             </g>
           </motion.g>
 
@@ -329,15 +339,15 @@ export function InteractiveTechBackground() {
               <path
                 d={darkGearPath}
                 fill="url(#darkGearGrad)"
-                stroke="#334155"
+                stroke="#64748b"
                 strokeWidth="2"
                 strokeLinejoin="round"
                 filter="url(#gearGlow)"
               />
               {/* Inner ring and hub */}
-              <circle cx="0" cy="0" r="32" fill="none" stroke="#94a3b8" strokeWidth="1.5" strokeDasharray="4 2" />
-              <circle cx="0" cy="0" r="18" fill="#1e293b" />
-              <circle cx="0" cy="0" r="7" fill="#f8fafc" />
+              <circle cx="0" cy="0" r="32" fill="none" stroke="#38bdf8" strokeWidth="1.5" strokeDasharray="4 2" strokeOpacity="0.6" />
+              <circle cx="0" cy="0" r="18" fill="#0f172a" stroke="#475569" strokeWidth="1.5" />
+              <circle cx="0" cy="0" r="7" fill="#38bdf8" />
             </g>
           </motion.g>
 
@@ -353,16 +363,16 @@ export function InteractiveTechBackground() {
               <path
                 d={blueGearPath}
                 fill="url(#blueGearGrad)"
-                stroke="#0284c7"
+                stroke="#38bdf8"
                 strokeWidth="1.5"
                 strokeLinejoin="round"
-                filter="url(#subtleShadow)"
+                filter="url(#gearGlow)"
               />
-              <circle cx="0" cy="0" r="7" fill="#ffffff" />
+              <circle cx="0" cy="0" r="7" fill="#f8fafc" />
             </g>
           </motion.g>
 
-          {/* 7. Primary Large White Mechanical Setting Gear (Center: x=120, y=400) */}
+          {/* 7. Primary Large Mechanical Setting Gear (Center: x=120, y=400) */}
           <motion.g
             style={{
               originX: '120px',
@@ -375,7 +385,7 @@ export function InteractiveTechBackground() {
               <path
                 d={mainGearPath}
                 fill="url(#mainGearGrad)"
-                stroke="#cbd5e1"
+                stroke="#475569"
                 strokeWidth="2.5"
                 strokeLinejoin="round"
                 filter="url(#gearGlow)"
@@ -389,7 +399,7 @@ export function InteractiveTechBackground() {
                   y1="-38"
                   x2="0"
                   y2="-88"
-                  stroke="#94a3b8"
+                  stroke="#475569"
                   strokeWidth="3.5"
                   strokeLinecap="round"
                   transform={`rotate(${deg})`}
@@ -404,23 +414,24 @@ export function InteractiveTechBackground() {
                   y1="-44"
                   x2="0"
                   y2="-82"
-                  stroke="#f8fafc"
+                  stroke="#38bdf8"
                   strokeWidth="1.5"
                   strokeLinecap="round"
+                  strokeOpacity="0.7"
                   transform={`rotate(${deg})`}
                 />
               ))}
 
               {/* Center Hub */}
-              <circle cx="0" cy="0" r="38" fill="url(#mainGearGrad)" stroke="#94a3b8" strokeWidth="2.5" />
-              <circle cx="0" cy="0" r="22" fill="#f8fafc" stroke="#64748b" strokeWidth="2" />
-              <circle cx="0" cy="0" r="8" fill="#1e293b" />
+              <circle cx="0" cy="0" r="38" fill="url(#mainGearGrad)" stroke="#475569" strokeWidth="2.5" />
+              <circle cx="0" cy="0" r="22" fill="#0f172a" stroke="#38bdf8" strokeWidth="2" />
+              <circle cx="0" cy="0" r="8" fill="#38bdf8" />
             </g>
           </motion.g>
         </svg>
       </motion.div>
 
-      {/* 8. Balanced Top-Right Floating Tech Gear Accent (Subtle & Dynamic on Desktop) */}
+      {/* 8. Balanced Top-Right Floating Tech Gear Accent */}
       <motion.div
         style={{
           position: 'absolute',
@@ -428,7 +439,7 @@ export function InteractiveTechBackground() {
           right: '-20px',
           width: '260px',
           height: '260px',
-          opacity: 0.45,
+          opacity: 0.5,
           y: shouldReduceMotion ? 0 : parallaxY,
           transformOrigin: 'top right',
         }}
@@ -445,12 +456,12 @@ export function InteractiveTechBackground() {
             <g transform="translate(130, 110)">
               <path
                 d={miniGearPath}
-                fill="rgba(255, 255, 255, 0.85)"
-                stroke="#94a3b8"
+                fill="rgba(30, 41, 59, 0.7)"
+                stroke="#64748b"
                 strokeWidth="1.8"
                 strokeLinejoin="round"
               />
-              <circle cx="0" cy="0" r="10" fill="#f1f5f9" stroke="#64748b" strokeWidth="1.5" />
+              <circle cx="0" cy="0" r="10" fill="#0f172a" stroke="#38bdf8" strokeWidth="1.5" />
             </g>
           </motion.g>
 
@@ -466,16 +477,17 @@ export function InteractiveTechBackground() {
               <path
                 d={orangeGearPath}
                 fill="none"
-                stroke="#cbd5e1"
+                stroke="#f97316"
                 strokeWidth="1.8"
                 strokeLinejoin="round"
+                strokeOpacity="0.8"
               />
-              <circle cx="0" cy="0" r="8" fill="#ffffff" stroke="#94a3b8" strokeWidth="1.2" />
+              <circle cx="0" cy="0" r="8" fill="#0f172a" stroke="#f97316" strokeWidth="1.2" />
             </g>
           </motion.g>
 
           {/* Faint HUD guide circle */}
-          <circle cx="130" cy="110" r="75" fill="none" stroke="#94a3b8" strokeWidth="1" strokeDasharray="4 4" strokeOpacity="0.4" />
+          <circle cx="130" cy="110" r="75" fill="none" stroke="#38bdf8" strokeWidth="1" strokeDasharray="4 4" strokeOpacity="0.25" />
         </svg>
       </motion.div>
     </div>
