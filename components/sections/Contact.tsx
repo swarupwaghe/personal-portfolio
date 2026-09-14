@@ -88,7 +88,13 @@ export function Footer() {
         <div className="footer-links">
           <a href={personalInfo.github} target="_blank" rel="noopener noreferrer">GitHub</a>
           <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href={`mailto:${personalInfo.email}`} target="_blank" rel="noopener noreferrer">Email</a>
+          <a 
+            href={`https://mail.google.com/mail/?view=cm&fs=1&to=${personalInfo.email}`} 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            Email
+          </a>
         </div>
         <p>&copy; {new Date().getFullYear()} {personalInfo.name}. All rights reserved.</p>
       </div>
