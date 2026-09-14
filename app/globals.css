@@ -52,6 +52,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 80px;
   background-color: var(--color-base);
   color-scheme: dark;
 }
@@ -103,6 +104,7 @@ a:hover {
 
 .section {
   padding: var(--space-8) 0;
+  scroll-margin-top: 80px;
 }
 
 /* Glassmorphism Classes */
@@ -194,10 +196,21 @@ a:hover {
   background: linear-gradient(135deg, #60a5fa, #a78bfa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  cursor: pointer;
 }
-.nav-links { display: flex; gap: var(--space-4); }
-.nav-links a { font-weight: 500; color: var(--color-text-secondary); }
-.nav-links a:hover { color: #38bdf8; }
+.nav-links { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.nav-links a { 
+  font-weight: 500; 
+  color: var(--color-text-secondary); 
+  font-size: var(--font-size-sm);
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+.nav-links a:hover, .nav-links a.active { 
+  color: #38bdf8; 
+  background: rgba(56, 189, 248, 0.12); 
+}
 
 /* Hero */
 .hero-section {
@@ -340,6 +353,22 @@ a:hover {
   outline: none;
   border-color: var(--accent-blue);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+.contact-success {
+  max-width: 600px;
+  background: var(--color-surface);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
+}
+.contact-success h3 {
+  color: var(--accent-cyan);
+  margin-bottom: var(--space-2);
+}
+.contact-success p {
+  color: var(--color-text-secondary);
+  line-height: 1.6;
 }
 
 /* Footer */
