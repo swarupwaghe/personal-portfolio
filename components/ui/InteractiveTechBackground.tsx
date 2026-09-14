@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion';
 
 // Procedural SVG Gear Path generator for precise mechanical gear geometry
@@ -12,7 +12,6 @@ function createGearPath(
 ): string {
   const points: string[] = [];
   const angleStep = (Math.PI * 2) / teeth;
-  const halfStep = angleStep / 2;
   const quarterStep = angleStep / 4;
 
   for (let i = 0; i < teeth; i++) {
@@ -59,9 +58,42 @@ function createGearPath(
   return points.join(' ');
 }
 
+const famousCodeSnippets = [
+  // C++ & Algorithms
+  { code: 'std::vector<int> data;', top: '12%', left: '5%', opacity: 0.32, color: '#38bdf8' },
+  { code: 'std::cout << "Hello, World!" << std::endl;', top: '22%', right: '6%', opacity: 0.28, color: '#818cf8' },
+  { code: 'i = 0x5f3759df - ( i >> 1 ); // Fast InvSqrt', top: '34%', left: '3%', opacity: 0.28, color: '#34d399' },
+  { code: 'int main(int argc, char* argv[])', top: '44%', right: '12%', opacity: 0.26, color: '#38bdf8' },
+  { code: 'template <typename T> class Matrix;', top: '56%', left: '7%', opacity: 0.28, color: '#fb923c' },
+  { code: 'qsort(arr, n, sizeof(int), cmp);', top: '68%', right: '5%', opacity: 0.28, color: '#c084fc' },
+
+  // AI & PyTorch / ML
+  { code: 'loss.backward(); optimizer.step();', top: '18%', right: '20%', opacity: 0.3, color: '#f472b6' },
+  { code: 'model = tf.keras.Sequential()', top: '39%', left: '14%', opacity: 0.27, color: '#38bdf8' },
+  { code: 'import torch.nn as nn', top: '62%', right: '22%', opacity: 0.26, color: '#34d399' },
+  { code: 'prompt.generate(temperature=0.7)', top: '76%', left: '10%', opacity: 0.3, color: '#a78bfa' },
+
+  // Data Science & Python & Git
+  { code: "df.groupby('category').mean()", top: '29%', left: '9%', opacity: 0.26, color: '#60a5fa' },
+  { code: 'SELECT * FROM analytics WHERE active = true;', top: '84%', right: '10%', opacity: 0.28, color: '#38bdf8' },
+  { code: 'npm run dev // Next.js Turbopack', top: '91%', left: '6%', opacity: 0.27, color: '#818cf8' },
+  { code: 'git commit -m "feat: initial commit"', top: '94%', right: '18%', opacity: 0.27, color: '#34d399' },
+];
+
 export function InteractiveTechBackground() {
   const shouldReduceMotion = useReducedMotion();
   const { scrollY, scrollYProgress } = useScroll();
+
+  // Mouse cursor tracking for interactive tech spotlight
+  const [mousePos, setMousePos] = useState({ x: 500, y: 300 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   // Smooth springs for fluid, physics-based rotation on scroll
   const smoothScrollY = useSpring(scrollY, {
@@ -112,39 +144,79 @@ export function InteractiveTechBackground() {
         overflow: 'hidden',
       }}
     >
-      {/* 1. Underlying Technical Artwork Background with Ambient Dark Vignette & Glow */}
+      {/* 1. Interactive Cyber Spotlight that follows mouse movement */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: `radial-gradient(650px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 189, 248, 0.08), transparent 75%)`,
+          pointerEvents: 'none',
+          transition: 'background 0.05s ease-out',
+        }}
+      />
+
+      {/* 2. Underlying Technical Artwork Background with Ambient Glow */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           backgroundImage: `
-            radial-gradient(circle at 15% 35%, rgba(37, 99, 235, 0.12) 0%, transparent 55%),
-            radial-gradient(circle at 85% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 50% 10%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
+            radial-gradient(circle at 15% 35%, rgba(37, 99, 235, 0.14) 0%, transparent 55%),
+            radial-gradient(circle at 85% 75%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
+            radial-gradient(circle at 50% 10%, rgba(6, 182, 212, 0.09) 0%, transparent 40%),
             url('/images/bg-gears.png')
           `,
           backgroundSize: 'cover',
           backgroundPosition: 'left center',
           backgroundRepeat: 'no-repeat',
-          opacity: 0.38,
-          filter: 'contrast(1.2) brightness(0.7) invert(0.05)',
+          opacity: 0.42,
+          filter: 'contrast(1.25) brightness(0.72) invert(0.05)',
         }}
       />
 
-      {/* 2. Soft Blueprint Diagonal Lines & Ambient Grid Overlay */}
+      {/* 3. Blueprint Grid & Cybernetic Grid Lines */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           backgroundImage: `
-            linear-gradient(to right, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(56, 189, 248, 0.04) 1px, transparent 1px)
+            linear-gradient(to right, rgba(56, 189, 248, 0.045) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(56, 189, 248, 0.045) 1px, transparent 1px)
           `,
-          backgroundSize: '32px 32px',
+          backgroundSize: '36px 36px',
         }}
       />
 
-      {/* 3. Interactive Motion Gears & HUD Mechanism Group (Bottom-Left / Center-Left) */}
+      {/* 4. Ambient Famous Tech Code Snippets floating in the background matrix */}
+      <div style={{ position: 'absolute', inset: 0, fontFamily: 'monospace', fontSize: '11px' }}>
+        {famousCodeSnippets.map((item, index) => (
+          <span
+            key={index}
+            style={{
+              position: 'absolute',
+              top: item.top,
+              left: item.left,
+              right: item.right,
+              opacity: item.opacity,
+              color: item.color,
+              textShadow: `0 0 10px ${item.color}44`,
+              whiteSpace: 'nowrap',
+              letterSpacing: '0.04em',
+            }}
+          >
+            {item.code}
+          </span>
+        ))}
+      </div>
+
+      {/* 5. HUD Status Ticker Overlay (Top Right & Bottom Right) */}
+      <div style={{ position: 'absolute', top: '80px', right: '24px', opacity: 0.35, fontFamily: 'monospace', fontSize: '10px', color: '#94a3b8', textAlign: 'right' }}>
+        <div>SYS_STATUS: ONLINE</div>
+        <div>STACK: C++ | TS | PYTHON | AI</div>
+        <div>BUILD: 2026.09.v1</div>
+      </div>
+
+      {/* 6. Interactive Motion Gears & HUD Mechanism Group (Bottom-Left / Center-Left) */}
       <motion.div
         style={{
           position: 'absolute',
@@ -164,9 +236,9 @@ export function InteractiveTechBackground() {
           style={{ overflow: 'visible' }}
         >
           <defs>
-            {/* Gear Drop Shadows & Subtle Tech Glows */}
+            {/* Gear Drop Shadows & Tech Glows */}
             <filter id="gearGlow" x="-30%" y="-30%" width="160%" height="160%">
-              <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="#38bdf8" floodOpacity="0.2" />
+              <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="#38bdf8" floodOpacity="0.25" />
               <feDropShadow dx="2" dy="6" stdDeviation="8" floodColor="#000000" floodOpacity="0.6" />
             </filter>
             <filter id="subtleShadow" x="-20%" y="-20%" width="140%" height="140%">
@@ -185,14 +257,10 @@ export function InteractiveTechBackground() {
               <stop offset="0%" stopColor="#38bdf8" />
               <stop offset="100%" stopColor="#0284c7" />
             </linearGradient>
-            <linearGradient id="orangeGearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#fb923c" />
-              <stop offset="100%" stopColor="#ea580c" />
-            </linearGradient>
           </defs>
 
           {/* Connected Circuit & Schematic Lines */}
-          <g stroke="#38bdf8" strokeWidth="1.2" strokeOpacity="0.3" fill="none">
+          <g stroke="#38bdf8" strokeWidth="1.2" strokeOpacity="0.35" fill="none">
             {/* Circuit traces */}
             <path d="M 120 400 L 250 400 L 290 440 L 390 440" />
             <path d="M 120 400 C 180 320 280 320 330 380" strokeDasharray="3 3" />
@@ -200,8 +268,8 @@ export function InteractiveTechBackground() {
             <path d="M 200 240 L 200 180 L 240 140 L 320 140" />
 
             {/* Orbiting HUD Arc Guide */}
-            <circle cx="120" cy="400" r="190" strokeDasharray="6 6" strokeOpacity="0.2" />
-            <circle cx="120" cy="400" r="230" strokeOpacity="0.15" />
+            <circle cx="120" cy="400" r="190" strokeDasharray="6 6" strokeOpacity="0.25" />
+            <circle cx="120" cy="400" r="230" strokeOpacity="0.18" />
 
             {/* Hexagonal Tech Decals */}
             <polygon points="320,440 330,422 350,422 360,440 350,458 330,458" stroke="#38bdf8" strokeWidth="1.2" fill="rgba(15, 23, 42, 0.7)" />
@@ -219,7 +287,7 @@ export function InteractiveTechBackground() {
             <circle cx="200" cy="180" r="3" />
           </g>
 
-          {/* HUD Concentric Radar Arc 1 (With Directional Arrowheads) */}
+          {/* HUD Concentric Radar Arc 1 */}
           <motion.g
             style={{
               originX: '120px',
@@ -235,27 +303,14 @@ export function InteractiveTechBackground() {
               stroke="#38bdf8"
               strokeWidth="1.8"
               strokeDasharray="40 18 10 18"
-              strokeOpacity="0.35"
+              strokeOpacity="0.4"
             />
-            {/* Arrowhead marker on HUD arc */}
-            <polygon
-              points="120,246 113,258 127,258"
-              fill="#38bdf8"
-              transform="rotate(35 120 400)"
-            />
-            <polygon
-              points="120,246 113,258 127,258"
-              fill="#38bdf8"
-              transform="rotate(110 120 400)"
-            />
-            <polygon
-              points="120,246 113,258 127,258"
-              fill="#38bdf8"
-              transform="rotate(220 120 400)"
-            />
+            <polygon points="120,246 113,258 127,258" fill="#38bdf8" transform="rotate(35 120 400)" />
+            <polygon points="120,246 113,258 127,258" fill="#38bdf8" transform="rotate(110 120 400)" />
+            <polygon points="120,246 113,258 127,258" fill="#38bdf8" transform="rotate(220 120 400)" />
           </motion.g>
 
-          {/* HUD Concentric Radar Arc 2 (Opposite Direction) */}
+          {/* HUD Concentric Radar Arc 2 */}
           <motion.g
             style={{
               originX: '120px',
@@ -271,14 +326,12 @@ export function InteractiveTechBackground() {
               stroke="#64748b"
               strokeWidth="1.5"
               strokeDasharray="70 25 15 25"
-              strokeOpacity="0.35"
+              strokeOpacity="0.4"
             />
-            {/* Caliper ticks */}
             <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(20 120 400)" />
             <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(40 120 400)" />
             <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(60 120 400)" />
             <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(80 120 400)" />
-            <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(100 120 400)" />
           </motion.g>
 
           {/* HUD Outer Track with Node */}
@@ -297,12 +350,12 @@ export function InteractiveTechBackground() {
               stroke="#475569"
               strokeWidth="1"
               strokeDasharray="4 8"
-              strokeOpacity="0.3"
+              strokeOpacity="0.35"
             />
             <circle cx="120" cy="195" r="4.5" fill="#38bdf8" />
           </motion.g>
 
-          {/* 4. Orange Outlined Setting Gear (Top-Left Position: x=170, y=240) */}
+          {/* Orange Setting Gear */}
           <motion.g
             style={{
               originX: '170px',
@@ -311,22 +364,20 @@ export function InteractiveTechBackground() {
             }}
           >
             <g transform="translate(170, 240)">
-              {/* Outer Gear Outline */}
               <path
                 d={orangeGearPath}
-                fill="rgba(249, 115, 22, 0.15)"
+                fill="rgba(249, 115, 22, 0.18)"
                 stroke="#f97316"
                 strokeWidth="2.5"
                 strokeLinejoin="round"
                 filter="url(#subtleShadow)"
               />
-              {/* Center decorative ring */}
               <circle cx="0" cy="0" r="12" fill="none" stroke="#f97316" strokeWidth="2" />
               <circle cx="0" cy="0" r="4" fill="#fb923c" />
             </g>
           </motion.g>
 
-          {/* 5. Dark Titanium Setting Gear (Interlocking at x=340, y=410) */}
+          {/* Dark Titanium Setting Gear */}
           <motion.g
             style={{
               originX: '340px',
@@ -335,7 +386,6 @@ export function InteractiveTechBackground() {
             }}
           >
             <g transform="translate(340, 410)">
-              {/* Dark Gear Body */}
               <path
                 d={darkGearPath}
                 fill="url(#darkGearGrad)"
@@ -344,14 +394,13 @@ export function InteractiveTechBackground() {
                 strokeLinejoin="round"
                 filter="url(#gearGlow)"
               />
-              {/* Inner ring and hub */}
               <circle cx="0" cy="0" r="32" fill="none" stroke="#38bdf8" strokeWidth="1.5" strokeDasharray="4 2" strokeOpacity="0.6" />
               <circle cx="0" cy="0" r="18" fill="#0f172a" stroke="#475569" strokeWidth="1.5" />
               <circle cx="0" cy="0" r="7" fill="#38bdf8" />
             </g>
           </motion.g>
 
-          {/* 6. Cyan/Sky Blue Accent Setting Gear (Bottom position: x=210, y=510) */}
+          {/* Sky Blue Gear */}
           <motion.g
             style={{
               originX: '210px',
@@ -372,7 +421,7 @@ export function InteractiveTechBackground() {
             </g>
           </motion.g>
 
-          {/* 7. Primary Large Mechanical Setting Gear (Center: x=120, y=400) */}
+          {/* Primary Large Mechanical Gear */}
           <motion.g
             style={{
               originX: '120px',
@@ -381,7 +430,6 @@ export function InteractiveTechBackground() {
             }}
           >
             <g transform="translate(120, 400)">
-              {/* Gear Body with Cutout */}
               <path
                 d={mainGearPath}
                 fill="url(#mainGearGrad)"
@@ -390,8 +438,6 @@ export function InteractiveTechBackground() {
                 strokeLinejoin="round"
                 filter="url(#gearGlow)"
               />
-
-              {/* 6 Spoke Beams connecting rim to hub */}
               {[0, 60, 120, 180, 240, 300].map((deg) => (
                 <line
                   key={deg}
@@ -405,8 +451,6 @@ export function InteractiveTechBackground() {
                   transform={`rotate(${deg})`}
                 />
               ))}
-
-              {/* Spoke Accent lines */}
               {[0, 60, 120, 180, 240, 300].map((deg) => (
                 <line
                   key={`acc-${deg}`}
@@ -421,8 +465,6 @@ export function InteractiveTechBackground() {
                   transform={`rotate(${deg})`}
                 />
               ))}
-
-              {/* Center Hub */}
               <circle cx="0" cy="0" r="38" fill="url(#mainGearGrad)" stroke="#475569" strokeWidth="2.5" />
               <circle cx="0" cy="0" r="22" fill="#0f172a" stroke="#38bdf8" strokeWidth="2" />
               <circle cx="0" cy="0" r="8" fill="#38bdf8" />
@@ -431,7 +473,7 @@ export function InteractiveTechBackground() {
         </svg>
       </motion.div>
 
-      {/* 8. Balanced Top-Right Floating Tech Gear Accent */}
+      {/* 7. Balanced Top-Right Floating Tech Gear Accent */}
       <motion.div
         style={{
           position: 'absolute',
@@ -439,13 +481,12 @@ export function InteractiveTechBackground() {
           right: '-20px',
           width: '260px',
           height: '260px',
-          opacity: 0.5,
+          opacity: 0.55,
           y: shouldReduceMotion ? 0 : parallaxY,
           transformOrigin: 'top right',
         }}
       >
         <svg viewBox="0 0 260 260" width="100%" height="100%" style={{ overflow: 'visible' }}>
-          {/* Top-Right Secondary Gear 1 */}
           <motion.g
             style={{
               originX: '130px',
@@ -465,7 +506,6 @@ export function InteractiveTechBackground() {
             </g>
           </motion.g>
 
-          {/* Top-Right Interlocking Gear 2 */}
           <motion.g
             style={{
               originX: '195px',
@@ -486,10 +526,10 @@ export function InteractiveTechBackground() {
             </g>
           </motion.g>
 
-          {/* Faint HUD guide circle */}
-          <circle cx="130" cy="110" r="75" fill="none" stroke="#38bdf8" strokeWidth="1" strokeDasharray="4 4" strokeOpacity="0.25" />
+          <circle cx="130" cy="110" r="75" fill="none" stroke="#38bdf8" strokeWidth="1" strokeDasharray="4 4" strokeOpacity="0.3" />
         </svg>
       </motion.div>
     </div>
   );
 }
+
