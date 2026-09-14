@@ -1,15 +1,74 @@
+"use client";
+
 import { personalInfo } from '@/data/portfolio';
-import { FadeIn } from '@/components/ui/MotionWrappers';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/ui/MotionWrappers';
 
 export function About() {
   return (
     <section id="about" className="section about-section">
-      <FadeIn className="container">
-        <h2>About Me</h2>
-        <div className="about-content">
-          <p>{personalInfo.about}</p>
-        </div>
-      </FadeIn>
+      <div className="container">
+        <FadeIn>
+          <div className="section-header">
+            <span className="section-tag">// DISCOVER MY BACKGROUND</span>
+            <h2>About Me</h2>
+          </div>
+        </FadeIn>
+
+        <StaggerContainer className="about-card-frame">
+          {/* Futuristic HUD Corner Crosshairs */}
+          <span className="hud-corner top-left">+</span>
+          <span className="hud-corner top-right">+</span>
+          <span className="hud-corner bottom-left">+</span>
+          <span className="hud-corner bottom-right">+</span>
+
+          <StaggerItem className="about-hero-text">
+            <h3>Driven by Curiosity, Powered by Code & AI</h3>
+            <p>{personalInfo.about}</p>
+          </StaggerItem>
+
+          <div className="about-grid">
+            <StaggerItem>
+              <div className="about-feature-card card-cyan">
+                <div className="feature-icon icon-cyan">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                </div>
+                <h4>Engineering Foundation</h4>
+                <p>Building core logic in C++, system concepts, and scalable software architecture.</p>
+              </div>
+            </StaggerItem>
+
+            <StaggerItem>
+              <div className="about-feature-card card-purple">
+                <div className="feature-icon icon-purple">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12L2.5 7.5"></path><path d="M12 12v10"></path></svg>
+                </div>
+                <h4>Prompt Engineering</h4>
+                <p>Crafting structured AI prompts to optimize generative AI model outputs and automated workflows.</p>
+              </div>
+            </StaggerItem>
+
+            <StaggerItem>
+              <div className="about-feature-card card-pink">
+                <div className="feature-icon icon-pink">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                </div>
+                <h4>Data Analysis</h4>
+                <p>Transforming raw datasets into actionable insights to guide intelligent decision-making.</p>
+              </div>
+            </StaggerItem>
+          </div>
+
+          <StaggerItem>
+            <div className="about-pills">
+              <span className="about-pill">🎓 Software Engineering Student</span>
+              <span className="about-pill">🚀 Hackathon Builder (Spendly)</span>
+              <span className="about-pill">📜 IBM & Infosys Certified</span>
+              <span className="about-pill">⚡ Practical Experimentation</span>
+            </div>
+          </StaggerItem>
+        </StaggerContainer>
+      </div>
     </section>
   );
 }
+
