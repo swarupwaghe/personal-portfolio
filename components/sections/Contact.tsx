@@ -77,9 +77,9 @@ export function Contact() {
             </div>
 
             <div>
-              <h2 className="contact-headline">Let’s build it</h2>
+              <h2 className="contact-headline">Get In Touch</h2>
               <p className="contact-subtext">
-                Tell us what you keep doing by hand and we&apos;ll show you what it looks like automated.
+                Have a project in mind, a question, or want to collaborate? Send me a message and let&apos;s connect!
               </p>
             </div>
 
