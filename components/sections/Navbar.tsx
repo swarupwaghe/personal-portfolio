@@ -10,8 +10,6 @@ const navItems = [
   { name: 'Education', href: '#education' },
   { name: 'Certifications', href: '#certifications' },
   { name: 'Journey', href: '#journey' },
-  { name: 'Data', href: '#data-analysis' },
-  { name: 'Prompting', href: '#prompt-engineering' },
   { name: 'Contact', href: '#contact' },
 ];
 

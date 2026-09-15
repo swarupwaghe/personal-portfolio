@@ -6,8 +6,6 @@ import { Projects } from '@/components/sections/Projects';
 import { Education } from '@/components/sections/Education';
 import { Certifications } from '@/components/sections/Certifications';
 import { Journey } from '@/components/sections/Journey';
-import { DataAnalysis } from '@/components/sections/DataAnalysis';
-import { PromptEngineering } from '@/components/sections/PromptEngineering';
 import { Contact, Footer } from '@/components/sections/Contact';
 
 export default function Home() {
@@ -22,8 +20,6 @@ export default function Home() {
         <Education />
         <Certifications />
         <Journey />
-        <DataAnalysis />
-        <PromptEngineering />
         <Contact />
       </main>
       <Footer />
