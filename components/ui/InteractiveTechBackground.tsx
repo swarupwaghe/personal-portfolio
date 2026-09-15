@@ -144,33 +144,30 @@ export function InteractiveTechBackground() {
         overflow: 'hidden',
       }}
     >
-      {/* 1. Interactive Cyber Spotlight that follows mouse movement */}
+      {/* 1. Interactive Cyber Spotlight that follows mouse movement with Emerald Glow */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          background: `radial-gradient(650px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 189, 248, 0.08), transparent 75%)`,
+          background: `radial-gradient(650px circle at ${mousePos.x}px ${mousePos.y}px, rgba(16, 185, 129, 0.12), rgba(56, 189, 248, 0.04) 50%, transparent 75%)`,
           pointerEvents: 'none',
           transition: 'background 0.05s ease-out',
         }}
       />
 
-      {/* 2. Underlying Technical Artwork Background with Ambient Glow */}
+      {/* 2. Underlying Technical Artwork Background with Ambient Emerald Glow */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           backgroundImage: `
-            radial-gradient(circle at 15% 35%, rgba(37, 99, 235, 0.14) 0%, transparent 55%),
-            radial-gradient(circle at 85% 75%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
-            radial-gradient(circle at 50% 10%, rgba(6, 182, 212, 0.09) 0%, transparent 40%),
-            url('/images/bg-gears.png')
+            radial-gradient(ellipse 800px 500px at 50% 120px, rgba(16, 185, 129, 0.22) 0%, transparent 70%),
+            radial-gradient(circle at 15% 35%, rgba(16, 185, 129, 0.12) 0%, transparent 55%),
+            radial-gradient(circle at 85% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.15) 0%, transparent 50%)
           `,
           backgroundSize: 'cover',
-          backgroundPosition: 'left center',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.42,
-          filter: 'contrast(1.25) brightness(0.72) invert(0.05)',
+          opacity: 0.65,
         }}
       />
 

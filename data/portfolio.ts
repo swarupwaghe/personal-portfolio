@@ -5,6 +5,7 @@ export const personalInfo = {
   title: 'Software Engineering Student',
   tagline: 'Aspiring Prompt Engineer & Data Analyst',
   location: 'Mumbai, Maharashtra, India',
+  phone: '+91 9321281463',
   introduction: "I'm a first-year Software Engineering student building my foundation in programming, AI, prompting, and data-driven problem solving. I enjoy learning through hands-on projects and exploring how technology can solve real-world problems.",
   about: "I am a first-year Software Engineering student building foundations in programming, AI, prompting, and real-world problem solving. I have a strong interest in Prompt Engineering and Data Analysis, and I believe in learning through projects, hackathons, certifications, and experimentation.",
   email: 'swarupwaghe@gmail.com',

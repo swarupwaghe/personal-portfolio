@@ -10,7 +10,7 @@ const navItems = [
   { name: 'Education', href: '#education' },
   { name: 'Certifications', href: '#certifications' },
   { name: 'Journey', href: '#journey' },
-  { name: 'Data Analysis', href: '#data-analysis' },
+  { name: 'Data', href: '#data-analysis' },
   { name: 'Prompting', href: '#prompt-engineering' },
   { name: 'Contact', href: '#contact' },
 ];
@@ -23,7 +23,7 @@ export function Navbar() {
     const targetId = href.replace('#', '');
     const element = document.getElementById(targetId);
     if (element) {
-      const navHeight = 75;
+      const navHeight = 85;
       const elementPosition = element.getBoundingClientRect().top + window.scrollY;
       const offsetPosition = elementPosition - navHeight;
       window.scrollTo({
@@ -37,7 +37,7 @@ export function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const sections = navItems.map(item => item.href.replace('#', ''));
-      const scrollPosition = window.scrollY + 100;
+      const scrollPosition = window.scrollY + 120;
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = document.getElementById(sections[i]);
@@ -53,15 +53,19 @@ export function Navbar() {
   }, []);
 
   return (
-    <nav className="navbar">
-      <div className="container nav-container">
-        <a 
-          href="#home" 
-          className="nav-logo"
-          onClick={(e) => scrollToSection(e, '#home')}
+    <div className="navbar-wrapper">
+      <nav className="navbar">
+        <button 
+          className="nav-gear-badge" 
+          title="System Core"
+          onClick={(e) => {
+            e.preventDefault();
+            const home = document.getElementById('home');
+            if (home) home.scrollIntoView({ behavior: 'smooth' });
+          }}
         >
-          SW
-        </a>
+          ⚙
+        </button>
         <div className="nav-links">
           {navItems.map((item) => (
             <a
@@ -74,8 +78,9 @@ export function Navbar() {
             </a>
           ))}
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 }
+
 
