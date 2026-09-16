@@ -2,16 +2,27 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { 
+  Home as HomeIcon, 
+  User as UserIcon, 
+  Code2, 
+  FolderGit2, 
+  GraduationCap, 
+  Award, 
+  Milestone, 
+  Mail,
+  Cpu
+} from 'lucide-react';
 
 const navItems = [
-  { name: 'Home', href: '#home' },
-  { name: 'About', href: '#about' },
-  { name: 'Skills', href: '#skills' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Education', href: '#education' },
-  { name: 'Certifications', href: '#certifications' },
-  { name: 'Journey', href: '#journey' },
-  { name: 'Contact', href: '#contact' },
+  { name: 'Home', href: '#home', icon: HomeIcon },
+  { name: 'About', href: '#about', icon: UserIcon },
+  { name: 'Skills', href: '#skills', icon: Code2 },
+  { name: 'Projects', href: '#projects', icon: FolderGit2 },
+  { name: 'Education', href: '#education', icon: GraduationCap },
+  { name: 'Certifications', href: '#certifications', icon: Award },
+  { name: 'Journey', href: '#journey', icon: Milestone },
+  { name: 'Contact', href: '#contact', icon: Mail },
 ];
 
 export function Navbar() {
@@ -63,19 +74,20 @@ export function Navbar() {
             if (home) home.scrollIntoView({ behavior: 'smooth' });
           }}
         >
-          ⚙
+          <Cpu size={16} />
         </button>
 
         <div className="nav-links" style={{ position: 'relative' }}>
           {navItems.map((item) => {
             const isActive = activeSection === item.href.replace('#', '');
+            const Icon = item.icon;
             return (
               <a
                 key={item.href}
                 href={item.href}
                 className={isActive ? 'active' : ''}
                 onClick={(e) => scrollToSection(e, item.href)}
-                style={{ position: 'relative', zIndex: 2 }}
+                style={{ position: 'relative', zIndex: 2, display: 'inline-flex', alignItems: 'center', gap: '6px' }}
               >
                 {isActive && (
                   <motion.span
@@ -92,7 +104,8 @@ export function Navbar() {
                     }}
                   />
                 )}
-                {item.name}
+                <Icon size={14} className="nav-item-icon" />
+                <span>{item.name}</span>
               </a>
             );
           })}
@@ -101,3 +114,4 @@ export function Navbar() {
     </div>
   );
 }
+

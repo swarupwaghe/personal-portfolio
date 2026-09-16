@@ -1,6 +1,7 @@
 import { certifications } from '@/data/portfolio';
 import { SpatialCard } from '@/components/ui/SpatialCard';
 import { StaggerContainer, StaggerItem, FadeIn } from '@/components/ui/MotionWrappers';
+import { Award, ShieldCheck } from 'lucide-react';
 
 export function Certifications() {
   return (
@@ -16,8 +17,14 @@ export function Certifications() {
           {certifications.map((cert, index) => (
             <StaggerItem key={index}>
               <SpatialCard className="cert-card" depth={12}>
-                <h3 className="depth-layer-2" style={{ fontSize: '1.1rem', marginBottom: '8px' }}>{cert.name}</h3>
-                <p className="issuer depth-layer-1" style={{ color: '#38bdf8', fontWeight: 600 }}>Issuer: {cert.issuer}</p>
+                <div className="depth-layer-2" style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginBottom: '8px' }}>
+                  <Award size={20} color="#c084fc" style={{ marginTop: '2px', flexShrink: 0 }} />
+                  <h3 style={{ fontSize: '1.1rem', margin: 0 }}>{cert.name}</h3>
+                </div>
+                <div className="issuer depth-layer-1" style={{ color: '#38bdf8', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.9rem' }}>
+                  <ShieldCheck size={14} color="#34d399" />
+                  <span>Issuer: {cert.issuer}</span>
+                </div>
               </SpatialCard>
             </StaggerItem>
           ))}
@@ -26,4 +33,5 @@ export function Certifications() {
     </section>
   );
 }
+
 

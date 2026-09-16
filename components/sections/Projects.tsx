@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { StaggerContainer, StaggerItem, FadeIn } from '@/components/ui/MotionWrappers';
 import { SpatialCard } from '@/components/ui/SpatialCard';
+import { ExternalLink, AlertCircle, FolderGit2 } from 'lucide-react';
 
 export function Projects() {
   return (
@@ -22,15 +23,19 @@ export function Projects() {
             <StaggerItem key={project.id}>
               <SpatialCard
                 className={`project-card ${project.featured ? 'featured' : ''}`}
-                depth={10}
+                depth={12}
               >
-                <h3 className="depth-layer-2">{project.title}</h3>
+                <div className="depth-layer-2" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                  <FolderGit2 size={20} color={project.featured ? '#c084fc' : '#38bdf8'} />
+                  <h3 style={{ margin: 0 }}>{project.title}</h3>
+                </div>
                 <p className="project-category depth-layer-2">{project.category}</p>
                 <p className="project-desc depth-layer-1">{project.description}</p>
                 {project.problemAddressed && (
-                  <p className="project-problem depth-layer-1">
-                    <strong>Problem:</strong> {project.problemAddressed}
-                  </p>
+                  <div className="project-problem depth-layer-1" style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+                    <AlertCircle size={16} color="#fb923c" style={{ marginTop: '3px', flexShrink: 0 }} />
+                    <span><strong>Problem:</strong> {project.problemAddressed}</span>
+                  </div>
                 )}
                 <div className="project-tech depth-layer-2">
                   {project.technologies.map((tech) => (
@@ -39,8 +44,9 @@ export function Projects() {
                 </div>
                 {project.liveUrl && (
                   <div className="project-actions depth-layer-3">
-                    <Button onClick={() => window.open(project.liveUrl, '_blank')}>
-                      Live Demo
+                    <Button onClick={() => window.open(project.liveUrl, '_blank')} className="btn-glowing">
+                      <span>Live Demo</span>
+                      <ExternalLink size={16} />
                     </Button>
                   </div>
                 )}
@@ -52,3 +58,4 @@ export function Projects() {
     </section>
   );
 }
+
