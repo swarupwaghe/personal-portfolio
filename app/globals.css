@@ -151,17 +151,18 @@ a:hover {
 .spatial-card {
   position: relative;
   border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, rgba(12, 19, 30, 0.88) 0%, rgba(6, 11, 18, 0.92) 100%);
-  backdrop-filter: blur(20px) saturate(190%);
-  -webkit-backdrop-filter: blur(20px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(135deg, rgba(14, 24, 38, 0.88) 0%, rgba(6, 11, 18, 0.94) 100%);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: 
-    0 20px 50px -10px rgba(0, 0, 0, 0.65),
-    inset 0 1px 1px rgba(255, 255, 255, 0.16),
-    0 0 40px rgba(16, 185, 129, 0.08);
+    0 25px 60px -10px rgba(0, 0, 0, 0.75),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.22),
+    0 0 45px rgba(16, 185, 129, 0.12);
   overflow: hidden;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   transform-style: preserve-3d;
+  perspective: 1200px;
   will-change: transform;
   display: flex;
   flex-direction: column;
@@ -169,11 +170,11 @@ a:hover {
 }
 
 .spatial-card.hovered {
-  border-color: rgba(56, 189, 248, 0.38);
+  border-color: rgba(56, 189, 248, 0.45);
   box-shadow: 
-    0 30px 70px -15px rgba(0, 0, 0, 0.75),
-    inset 0 1px 2px rgba(255, 255, 255, 0.28),
-    0 0 55px rgba(56, 189, 248, 0.22);
+    0 35px 85px -15px rgba(0, 0, 0, 0.85),
+    inset 0 1px 2.5px rgba(255, 255, 255, 0.35),
+    0 0 65px rgba(56, 189, 248, 0.28);
 }
 
 .spatial-specular-glare {
@@ -184,15 +185,28 @@ a:hover {
   opacity: 0;
   transition: opacity 0.25s ease;
   background: radial-gradient(
-    600px circle at var(--glare-x, 50%) var(--glare-y, 50%),
-    rgba(255, 255, 255, 0.14),
-    rgba(56, 189, 248, 0.05) 40%,
+    700px circle at var(--glare-x, 50%) var(--glare-y, 50%),
+    rgba(255, 255, 255, 0.18),
+    rgba(56, 189, 248, 0.08) 40%,
     transparent 80%
   );
 }
 
 .spatial-card.hovered .spatial-specular-glare {
   opacity: 1;
+}
+
+.spatial-bevel-border {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  pointer-events: none;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent 40%, rgba(56, 189, 248, 0.15)) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  z-index: 2;
 }
 
 .spatial-card-content {
@@ -206,26 +220,33 @@ a:hover {
   padding: var(--space-5);
 }
 
-/* 3D Parallax Depth Layers */
-.depth-layer-1 { transform: translateZ(14px); }
-.depth-layer-2 { transform: translateZ(28px); }
-.depth-layer-3 { transform: translateZ(42px); }
-.depth-layer-4 { transform: translateZ(56px); }
+/* Enhanced 3D Parallax Depth Layers */
+.depth-layer-1 { transform: translateZ(20px); transition: transform 0.3s ease; }
+.depth-layer-2 { transform: translateZ(38px); transition: transform 0.3s ease; }
+.depth-layer-3 { transform: translateZ(56px); transition: transform 0.3s ease; }
+.depth-layer-4 { transform: translateZ(75px); transition: transform 0.3s ease; }
+
+.spatial-card.hovered .depth-layer-1 { transform: translateZ(28px); }
+.spatial-card.hovered .depth-layer-2 { transform: translateZ(50px); }
+.spatial-card.hovered .depth-layer-3 { transform: translateZ(72px); }
+.spatial-card.hovered .depth-layer-4 { transform: translateZ(95px); }
 
 /* Components */
 .card {
   border-radius: var(--radius-lg);
   padding: var(--space-5);
   box-shadow: var(--shadow-sm);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  transform-style: preserve-3d;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
 }
 
 .card:hover {
   box-shadow: var(--shadow-hover);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(56, 189, 248, 0.3);
   background: var(--color-surface-hover);
-  transform: translateY(-4px) translateZ(10px);
+  transform: translateY(-6px) translateZ(25px) rotateX(2deg);
 }
+
 
 .badge {
   display: inline-block;

@@ -14,7 +14,7 @@ interface SpatialCardProps {
 export function SpatialCard({
   children,
   className = '',
-  depth = 10,
+  depth = 16,
   onClick,
   style,
 }: SpatialCardProps) {
@@ -24,13 +24,17 @@ export function SpatialCard({
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Spring physics for smooth 60fps 3D tilt
-  const mouseXSpring = useSpring(x, { stiffness: 180, damping: 22 });
-  const mouseYSpring = useSpring(y, { stiffness: 180, damping: 22 });
+  // Responsive spring physics for hyper-smooth 3D tilt
+  const mouseXSpring = useSpring(x, { stiffness: 220, damping: 20 });
+  const mouseYSpring = useSpring(y, { stiffness: 220, damping: 20 });
 
   // Map mouse offsets to rotateX and rotateY
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], [depth, -depth]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], [-depth, depth]);
+
+  // Dynamic 3D shadow offset based on tilt
+  const shadowX = useTransform(mouseXSpring, [-0.5, 0.5], [20, -20]);
+  const shadowY = useTransform(mouseYSpring, [-0.5, 0.5], [20, -20]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
@@ -45,9 +49,13 @@ export function SpatialCard({
     x.set(xPct);
     y.set(yPct);
 
-    // Direct CSS variable mutation (0 React re-renders!)
-    ref.current.style.setProperty('--glare-x', `${Math.round((mouseX / rect.width) * 100)}%`);
-    ref.current.style.setProperty('--glare-y', `${Math.round((mouseY / rect.height) * 100)}%`);
+    // CSS Custom Variables mutation for glare and 3D shadow position
+    const glareX = Math.round((mouseX / rect.width) * 100);
+    const glareY = Math.round((mouseY / rect.height) * 100);
+    ref.current.style.setProperty('--glare-x', `${glareX}%`);
+    ref.current.style.setProperty('--glare-y', `${glareY}%`);
+    ref.current.style.setProperty('--tilt-x-val', `${(yPct * -depth).toFixed(2)}deg`);
+    ref.current.style.setProperty('--tilt-y-val', `${(xPct * depth).toFixed(2)}deg`);
   };
 
   const handleMouseEnter = () => {
@@ -76,14 +84,26 @@ export function SpatialCard({
         rotateX,
         rotateY,
         transformStyle: 'preserve-3d',
+        perspective: 1200,
         willChange: 'transform',
         ...style,
       }}
     >
-      {/* Dynamic Specular Light Glare Overlay using CSS Custom Variables */}
+      {/* 3D Corner HUD Crosshairs floating in space */}
+      <span className="hud-corner top-left depth-layer-4">+</span>
+      <span className="hud-corner top-right depth-layer-4">+</span>
+      <span className="hud-corner bottom-left depth-layer-4">+</span>
+      <span className="hud-corner bottom-right depth-layer-4">+</span>
+
+      {/* Dynamic Specular Light Glare Overlay */}
       <div className="spatial-specular-glare" />
+
+      {/* 3D Edge Bevel Highlights */}
+      <div className="spatial-bevel-border" />
+
       {/* Volumetric Content Layer */}
       <div className="spatial-card-content">{children}</div>
     </motion.div>
   );
 }
+
