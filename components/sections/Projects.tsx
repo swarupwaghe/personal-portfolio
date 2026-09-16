@@ -2,53 +2,51 @@
 
 import React from 'react';
 import { projects } from '@/data/portfolio';
-import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
-import { StaggerContainer, StaggerItem, FadeIn } from '@/components/ui/MotionWrappers';
-import { SpatialCard } from '@/components/ui/SpatialCard';
 
 export function Projects() {
   return (
-    <section id="projects" className="section projects-section">
-      <div className="container">
-        <FadeIn>
-          <div className="section-header">
-            <span className="section-tag">// SELECTED WORK & LABS</span>
-            <h2>Projects</h2>
-          </div>
-        </FadeIn>
-        <StaggerContainer className="projects-grid">
+    <section id="projects" className="terminal-section">
+      <div className="terminal-container">
+        <h2 className="terminal-section-heading">Projects</h2>
+
+        <div className="terminal-projects-grid">
           {projects.map((project) => (
-            <StaggerItem key={project.id}>
-              <SpatialCard
-                className={`project-card ${project.featured ? 'featured' : ''}`}
-                depth={10}
-              >
-                <h3 className="depth-layer-2">{project.title}</h3>
-                <p className="project-category depth-layer-2">{project.category}</p>
-                <p className="project-desc depth-layer-1">{project.description}</p>
-                {project.problemAddressed && (
-                  <p className="project-problem depth-layer-1">
-                    <strong>Problem:</strong> {project.problemAddressed}
-                  </p>
-                )}
-                <div className="project-tech depth-layer-2">
-                  {project.technologies.map((tech) => (
-                    <Badge key={tech}>{tech}</Badge>
-                  ))}
+            <div key={project.id} className="terminal-card">
+              <div className="terminal-card-header">
+                <h3 className="terminal-card-title">{project.title}</h3>
+                <span className="terminal-card-category">{project.category}</span>
+              </div>
+              <p className="terminal-card-desc">{project.description}</p>
+              {project.problemAddressed && (
+                <p className="terminal-card-problem">
+                  <span className="text-amber">Problem:</span> {project.problemAddressed}
+                </p>
+              )}
+              <div className="terminal-tech-tags">
+                {project.technologies.map((tech) => (
+                  <span key={tech} className="terminal-tech-chip">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+              {project.liveUrl && (
+                <div className="terminal-card-action">
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="terminal-link"
+                  >
+                    <span>Deploy / Live Demo</span>
+                    <span className="terminal-arrow">↗</span>
+                  </a>
                 </div>
-                {project.liveUrl && (
-                  <div className="project-actions depth-layer-3">
-                    <Button onClick={() => window.open(project.liveUrl, '_blank')}>
-                      Live Demo
-                    </Button>
-                  </div>
-                )}
-              </SpatialCard>
-            </StaggerItem>
+              )}
+            </div>
           ))}
-        </StaggerContainer>
+        </div>
       </div>
     </section>
   );
 }
+

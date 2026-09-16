@@ -1,11 +1,9 @@
 import { Navbar } from '@/components/sections/Navbar';
 import { Hero } from '@/components/sections/Hero';
-import { About } from '@/components/sections/About';
-import { Skills } from '@/components/sections/Skills';
+import { ExperienceSection } from '@/components/sections/ExperienceSection';
 import { Projects } from '@/components/sections/Projects';
-import { Education } from '@/components/sections/Education';
-import { Certifications } from '@/components/sections/Certifications';
-import { Journey } from '@/components/sections/Journey';
+import { ExtrasSection } from '@/components/sections/ExtrasSection';
+import { BlogSection } from '@/components/sections/BlogSection';
 import { Contact, Footer } from '@/components/sections/Contact';
 
 export default function Home() {
@@ -14,15 +12,14 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
-        <About />
-        <Skills />
+        <ExperienceSection />
         <Projects />
-        <Education />
-        <Certifications />
-        <Journey />
+        <ExtrasSection />
+        <BlogSection />
         <Contact />
       </main>
       <Footer />
     </>
   );
 }
+

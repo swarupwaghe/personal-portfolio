@@ -1,3 +1,12 @@
+export interface Experience {
+  company: string;
+  role: string;
+  period: string;
+  location?: string;
+  description: string[];
+  skills: string[];
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -46,3 +55,4 @@ export interface TimelineItem {
   description: string;
   type: 'Foundation' | 'Exploration' | 'Building' | 'Collaboration' | 'Future';
 }
+

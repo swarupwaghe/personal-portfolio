@@ -1,4 +1,4 @@
-import { Activity, Certification, Education, Project, Skill, TimelineItem } from './types';
+import { Activity, Certification, Education, Experience, Project, Skill, TimelineItem } from './types';
 
 export const personalInfo = {
   name: 'Swarup Waghe',
@@ -14,7 +14,35 @@ export const personalInfo = {
   resumeUrl: '/resume.pdf'
 };
 
+export const experiences: Experience[] = [
+  {
+    company: 'Spendly & Independent Projects',
+    role: 'Full-Stack Developer & Prompt Engineer',
+    period: '2025 — Present',
+    location: 'Mumbai, India',
+    description: [
+      'Architected Spendly, an AI-driven smart transaction wallet leveraging React, Next.js, and LLM prompt engineering to deliver financial tracking insights.',
+      'Optimized client-side rendering and static assets, reducing page load latencies and streamlining user interface state management.',
+      'Integrated automated prompt workflows to categorize unstructured spending inputs into structured financial analytics.'
+    ],
+    skills: ['React', 'TypeScript', 'Next.js', 'Prompt Engineering', 'TailwindCSS / CSS']
+  },
+  {
+    company: 'Nexora & Ancient Math Initiative',
+    role: 'Software Engineering Contributor',
+    period: '2025 — 2026',
+    location: 'Mumbai, India',
+    description: [
+      'Developed interactive educational web tools for Ancient Indian Mathematics in a collaborative team environment.',
+      'Participated in Nexora Hackathon 2026, building event-driven prototype tools in C++ and JavaScript.',
+      'Pioneered modular component structures for rapid prototyping in competitive hackathon environments.'
+    ],
+    skills: ['C++', 'JavaScript', 'HTML/CSS', 'Git', 'System Design']
+  }
+];
+
 export const skills: Skill[] = [
+
   { name: 'C++', category: 'Programming', reference: 'Learning' },
   { name: 'HTML', category: 'Programming', reference: 'Familiar' },
   { name: 'Git', category: 'Development & Version Control', reference: 'Familiar' },

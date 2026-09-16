@@ -1,103 +1,59 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React from 'react';
+import { personalInfo } from '@/data/portfolio';
 
 const navItems = [
-  { name: 'Home', href: '#home' },
-  { name: 'About', href: '#about' },
-  { name: 'Skills', href: '#skills' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Education', href: '#education' },
-  { name: 'Certifications', href: '#certifications' },
-  { name: 'Journey', href: '#journey' },
-  { name: 'Contact', href: '#contact' },
+  { name: 'Resume', href: personalInfo.resumeUrl, isExternal: true },
+  { name: 'Projects', href: '#projects', isExternal: false },
+  { name: 'Extras', href: '#extras', isExternal: false },
+  { name: 'Blog', href: '#blog', isExternal: false },
 ];
 
 export function Navbar() {
-  const [activeSection, setActiveSection] = useState('home');
-
-  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string, isExternal: boolean) => {
+    if (isExternal) return; // let normal link click open external resume
     e.preventDefault();
     const targetId = href.replace('#', '');
     const element = document.getElementById(targetId);
     if (element) {
-      const navHeight = 85;
       const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-      const offsetPosition = elementPosition - navHeight;
       window.scrollTo({
-        top: offsetPosition,
+        top: elementPosition - 60,
         behavior: 'smooth',
       });
-      setActiveSection(targetId);
     }
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = navItems.map((item) => item.href.replace('#', ''));
-      const scrollPosition = window.scrollY + 140;
-
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sections[i]);
-        if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(sections[i]);
-          break;
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
-    <div className="navbar-wrapper">
-      <nav className="navbar spatial-glass-panel">
-        <button
-          className="nav-gear-badge"
-          title="System Core"
-          onClick={(e) => {
-            e.preventDefault();
-            const home = document.getElementById('home');
-            if (home) home.scrollIntoView({ behavior: 'smooth' });
-          }}
-        >
-          ⚙
-        </button>
-
-        <div className="nav-links" style={{ position: 'relative' }}>
-          {navItems.map((item) => {
-            const isActive = activeSection === item.href.replace('#', '');
-            return (
-              <a
-                key={item.href}
-                href={item.href}
-                className={isActive ? 'active' : ''}
-                onClick={(e) => scrollToSection(e, item.href)}
-                style={{ position: 'relative', zIndex: 2 }}
-              >
-                {isActive && (
-                  <motion.span
-                    layoutId="spatialNavActivePill"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      borderRadius: '9999px',
-                      background: 'rgba(255, 255, 255, 0.16)',
-                      border: '1px solid rgba(255, 255, 255, 0.25)',
-                      boxShadow: '0 4px 14px rgba(56, 189, 248, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3)',
-                      zIndex: -1,
-                    }}
-                  />
-                )}
-                {item.name}
-              </a>
-            );
-          })}
+    <header className="terminal-header">
+      <div className="terminal-header-container">
+        {/* Left: $ logo icon + Hi, I'm Swarup Waghe */}
+        <div className="terminal-logo">
+          <span className="terminal-prompt-symbol">$</span>
+          <span className="terminal-name-title">Hi, I'm {personalInfo.name}</span>
         </div>
-      </nav>
-    </div>
+
+        {/* Right: Resume, Projects, Extras, Blog */}
+        <nav className="terminal-nav">
+          {navItems.map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              target={item.isExternal ? '_blank' : '_self'}
+              rel={item.isExternal ? 'noopener noreferrer' : undefined}
+              className="terminal-nav-link"
+              onClick={(e) => scrollToSection(e, item.href, item.isExternal)}
+            >
+              {item.name}
+            </a>
+          ))}
+        </nav>
+      </div>
+
+      {/* Thin amber horizontal rule under header */}
+      <div className="amber-rule" />
+    </header>
   );
 }
+
