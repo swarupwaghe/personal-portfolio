@@ -54,6 +54,22 @@
   --spatial-glow-emerald: rgba(16, 185, 129, 0.3);
 }
 
+/* CRT Scanline Overlay inspired by sparshdev.space */
+.crt-overlay {
+  content: "";
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+  background-size: 100% 4px;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.22;
+}
+
 /* Reset & Base */
 * {
   box-sizing: border-box;
@@ -72,7 +88,7 @@ body {
   background-color: transparent;
   color: var(--color-text-primary);
   line-height: 1.6;
-  font-family: inherit;
+  font-family: var(--font-chakra), system-ui, -apple-system, sans-serif;
   min-height: 100vh;
 }
 
@@ -80,12 +96,17 @@ h1, h2, h3, h4 {
   color: var(--color-text-primary);
   line-height: 1.2;
   margin-bottom: var(--space-3);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
+  font-family: var(--font-chakra), system-ui, -apple-system, sans-serif;
 }
 
 h1 { font-size: var(--font-size-4xl); font-weight: 800; }
 h2 { font-size: var(--font-size-3xl); font-weight: 700; margin-bottom: var(--space-5); }
 h3 { font-size: var(--font-size-xl); font-weight: 600; }
+
+code, .tech-tag, .badge, .hud-corner, .section-tag, .hero-location, .stat-lbl, .journey-date {
+  font-family: var(--font-mono-custom), monospace;
+}
 
 a {
   color: var(--accent-blue);
