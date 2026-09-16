@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion';
+import { ThreeCanvasBackground } from './ThreeCanvasBackground';
 
 // Procedural SVG Gear Path generator for precise mechanical gear geometry
 function createGearPath(
@@ -17,22 +18,18 @@ function createGearPath(
   for (let i = 0; i < teeth; i++) {
     const angle = i * angleStep;
 
-    // Root start
     const a0 = angle - quarterStep;
     const x0 = Math.cos(a0) * innerRadius;
     const y0 = Math.sin(a0) * innerRadius;
 
-    // Tooth tip lead-in
     const a1 = angle - quarterStep * 0.55;
     const x1 = Math.cos(a1) * outerRadius;
     const y1 = Math.sin(a1) * outerRadius;
 
-    // Tooth tip trailing
     const a2 = angle + quarterStep * 0.55;
     const x2 = Math.cos(a2) * outerRadius;
     const y2 = Math.sin(a2) * outerRadius;
 
-    // Root end
     const a3 = angle + quarterStep;
     const x3 = Math.cos(a3) * innerRadius;
     const y3 = Math.sin(a3) * innerRadius;
@@ -48,7 +45,6 @@ function createGearPath(
   }
   points.push('Z');
 
-  // Cutout center hole (counter-clockwise path)
   if (holeRadius > 0) {
     points.push(
       `M ${holeRadius} 0 A ${holeRadius} ${holeRadius} 0 1 0 ${-holeRadius} 0 A ${holeRadius} ${holeRadius} 0 1 0 ${holeRadius} 0 Z`
@@ -81,16 +77,32 @@ const famousCodeSnippets = [
 ];
 
 export function InteractiveTechBackground() {
+  const rootRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
   const { scrollY, scrollYProgress } = useScroll();
 
-  // Mouse cursor tracking for interactive tech spotlight
-  const [mousePos, setMousePos] = useState({ x: 500, y: 300 });
-
+  // Pure CSS variables update for mouse tracking (0 React re-renders!)
   useEffect(() => {
+    let ticking = false;
+
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (rootRef.current) {
+            rootRef.current.style.setProperty('--spot-x', `${e.clientX}px`);
+            rootRef.current.style.setProperty('--spot-y', `${e.clientY}px`);
+
+            const rotX = (e.clientY - window.innerHeight / 2) * 0.01;
+            const rotY = (e.clientX - window.innerWidth / 2) * -0.01;
+            rootRef.current.style.setProperty('--grid-rot-x', `${rotX.toFixed(2)}deg`);
+            rootRef.current.style.setProperty('--grid-rot-y', `${rotY.toFixed(2)}deg`);
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
+
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
@@ -107,7 +119,7 @@ export function InteractiveTechBackground() {
     damping: 26,
   });
 
-  // Gear rotation calculations (gear ratio linked)
+  // Gear rotation calculations
   const mainGearRotation = useTransform(smoothScrollY, [0, 4000], [0, 540]);
   const darkGearRotation = useTransform(smoothScrollY, [0, 4000], [0, -720]);
   const orangeGearRotation = useTransform(smoothScrollY, [0, 4000], [0, 600]);
@@ -116,14 +128,11 @@ export function InteractiveTechBackground() {
   const hudRing2Rotation = useTransform(smoothScrollY, [0, 4000], [0, 450]);
   const hudRing3Rotation = useTransform(smoothScrollY, [0, 4000], [0, -180]);
 
-  // Secondary top-right subtle gear rotation
   const trGear1Rotation = useTransform(smoothScrollY, [0, 4000], [0, 400]);
   const trGear2Rotation = useTransform(smoothScrollY, [0, 4000], [0, -600]);
 
-  // Subtle parallax translation for depth
   const parallaxY = useTransform(smoothProgress, [0, 1], [0, -40]);
 
-  // Memoized SVG paths for crisp performance
   const mainGearPath = useMemo(() => createGearPath(14, 110, 88, 42), []);
   const darkGearPath = useMemo(() => createGearPath(12, 75, 58, 22), []);
   const orangeGearPath = useMemo(() => createGearPath(10, 50, 38, 14), []);
@@ -132,6 +141,7 @@ export function InteractiveTechBackground() {
 
   return (
     <div
+      ref={rootRef}
       aria-hidden="true"
       style={{
         position: 'fixed',
@@ -142,391 +152,296 @@ export function InteractiveTechBackground() {
         pointerEvents: 'none',
         zIndex: 0,
         overflow: 'hidden',
+        perspective: '1200px',
       }}
     >
-      {/* 1. Interactive Cyber Spotlight that follows mouse movement with Emerald Glow */}
+      {/* 0. Real-Time 3D WebGL Particle Constellation */}
+      <ThreeCanvasBackground />
+
+      {/* 1. Interactive Spatial Volumetric Light Spotlight */}
       <div
+        className="spatial-spotlight-layer"
         style={{
           position: 'absolute',
           inset: 0,
-          background: `radial-gradient(650px circle at ${mousePos.x}px ${mousePos.y}px, rgba(16, 185, 129, 0.12), rgba(56, 189, 248, 0.04) 50%, transparent 75%)`,
+          background: `radial-gradient(750px circle at var(--spot-x, 50%) var(--spot-y, 30%), rgba(16, 185, 129, 0.14), rgba(56, 189, 248, 0.05) 45%, transparent 75%)`,
           pointerEvents: 'none',
-          transition: 'background 0.05s ease-out',
         }}
       />
 
-      {/* 2. Underlying Technical Artwork Background with Ambient Emerald Glow */}
+      {/* 2. 3D Perspective Technical Artwork & Blueprint Grid Layer */}
       <div
+        className="spatial-grid-tilt-layer"
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: `
-            radial-gradient(ellipse 800px 500px at 50% 120px, rgba(16, 185, 129, 0.22) 0%, transparent 70%),
-            radial-gradient(circle at 15% 35%, rgba(16, 185, 129, 0.12) 0%, transparent 55%),
-            radial-gradient(circle at 85% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.15) 0%, transparent 50%)
-          `,
-          backgroundSize: 'cover',
-          opacity: 0.65,
-        }}
-      />
-
-      {/* 3. Blueprint Grid & Cybernetic Grid Lines */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `
-            linear-gradient(to right, rgba(56, 189, 248, 0.045) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(56, 189, 248, 0.045) 1px, transparent 1px)
-          `,
-          backgroundSize: '36px 36px',
-        }}
-      />
-
-      {/* 4. Ambient Famous Tech Code Snippets floating in the background matrix */}
-      <div style={{ position: 'absolute', inset: 0, fontFamily: 'monospace', fontSize: '11px' }}>
-        {famousCodeSnippets.map((item, index) => (
-          <span
-            key={index}
-            style={{
-              position: 'absolute',
-              top: item.top,
-              left: item.left,
-              right: item.right,
-              opacity: item.opacity,
-              color: item.color,
-              textShadow: `0 0 10px ${item.color}44`,
-              whiteSpace: 'nowrap',
-              letterSpacing: '0.04em',
-            }}
-          >
-            {item.code}
-          </span>
-        ))}
-      </div>
-
-      {/* 5. HUD Status Ticker Overlay (Top Right & Bottom Right) */}
-      <div style={{ position: 'absolute', top: '80px', right: '24px', opacity: 0.35, fontFamily: 'monospace', fontSize: '10px', color: '#94a3b8', textAlign: 'right' }}>
-        <div>SYS_STATUS: ONLINE</div>
-        <div>STACK: C++ | TS | PYTHON | AI</div>
-        <div>BUILD: 2026.09.v1</div>
-      </div>
-
-      {/* 6. Interactive Motion Gears & HUD Mechanism Group (Bottom-Left / Center-Left) */}
-      <motion.div
-        style={{
-          position: 'absolute',
-          left: 'max(-40px, -2vw)',
-          bottom: 'max(-40px, -4vh)',
-          width: '580px',
-          height: '580px',
-          y: shouldReduceMotion ? 0 : parallaxY,
-          transformOrigin: 'bottom left',
-          opacity: 0.9,
+          transform: `rotateX(var(--grid-rot-x, 0deg)) rotateY(var(--grid-rot-y, 0deg)) scale(1.02)`,
+          transformStyle: 'preserve-3d',
+          willChange: 'transform',
         }}
       >
-        <svg
-          viewBox="0 0 580 580"
-          width="100%"
-          height="100%"
-          style={{ overflow: 'visible' }}
+        {/* Technical Ambient Glow */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: `
+              radial-gradient(ellipse 900px 550px at 50% 120px, rgba(16, 185, 129, 0.22) 0%, transparent 70%),
+              radial-gradient(circle at 15% 35%, rgba(16, 185, 129, 0.12) 0%, transparent 55%),
+              radial-gradient(circle at 85% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.15) 0%, transparent 50%)
+            `,
+            backgroundSize: 'cover',
+            opacity: 0.65,
+          }}
+        />
+
+        {/* Blueprint Grid Lines */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: `
+              linear-gradient(to right, rgba(56, 189, 248, 0.045) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(56, 189, 248, 0.045) 1px, transparent 1px)
+            `,
+            backgroundSize: '40px 40px',
+          }}
+        />
+
+        {/* Ambient Famous Tech Code Snippets */}
+        <div style={{ position: 'absolute', inset: 0, fontFamily: 'monospace', fontSize: '11px' }}>
+          {famousCodeSnippets.map((item, index) => (
+            <span
+              key={index}
+              style={{
+                position: 'absolute',
+                top: item.top,
+                left: item.left,
+                right: item.right,
+                opacity: item.opacity,
+                color: item.color,
+                textShadow: `0 0 10px ${item.color}44`,
+                whiteSpace: 'nowrap',
+                letterSpacing: '0.04em',
+              }}
+            >
+              {item.code}
+            </span>
+          ))}
+        </div>
+
+        {/* HUD Status Ticker */}
+        <div style={{ position: 'absolute', top: '80px', right: '24px', opacity: 0.35, fontFamily: 'monospace', fontSize: '10px', color: '#94a3b8', textAlign: 'right' }}>
+          <div>SYS_STATUS: ONLINE</div>
+          <div>STACK: C++ | TS | PYTHON | AI</div>
+          <div>BUILD: 2026.09.v1</div>
+        </div>
+
+        {/* Motion Gears */}
+        <motion.div
+          style={{
+            position: 'absolute',
+            left: 'max(-40px, -2vw)',
+            bottom: 'max(-40px, -4vh)',
+            width: '580px',
+            height: '580px',
+            y: shouldReduceMotion ? 0 : parallaxY,
+            transformOrigin: 'bottom left',
+            opacity: 0.9,
+          }}
         >
-          <defs>
-            {/* Gear Drop Shadows & Tech Glows */}
-            <filter id="gearGlow" x="-30%" y="-30%" width="160%" height="160%">
-              <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="#38bdf8" floodOpacity="0.25" />
-              <feDropShadow dx="2" dy="6" stdDeviation="8" floodColor="#000000" floodOpacity="0.6" />
-            </filter>
-            <filter id="subtleShadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="1" dy="3" stdDeviation="4" floodColor="#000000" floodOpacity="0.4" />
-            </filter>
-            {/* Gradients */}
-            <linearGradient id="mainGearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#334155" />
-              <stop offset="100%" stopColor="#1e293b" />
-            </linearGradient>
-            <linearGradient id="darkGearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#1e293b" />
-              <stop offset="100%" stopColor="#0f172a" />
-            </linearGradient>
-            <linearGradient id="blueGearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#38bdf8" />
-              <stop offset="100%" stopColor="#0284c7" />
-            </linearGradient>
-          </defs>
+          <svg viewBox="0 0 580 580" width="100%" height="100%" style={{ overflow: 'visible' }}>
+            <defs>
+              <filter id="gearGlow" x="-30%" y="-30%" width="160%" height="160%">
+                <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="#38bdf8" floodOpacity="0.25" />
+                <feDropShadow dx="2" dy="6" stdDeviation="8" floodColor="#000000" floodOpacity="0.6" />
+              </filter>
+              <filter id="subtleShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="1" dy="3" stdDeviation="4" floodColor="#000000" floodOpacity="0.4" />
+              </filter>
+              <linearGradient id="mainGearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#334155" />
+                <stop offset="100%" stopColor="#1e293b" />
+              </linearGradient>
+              <linearGradient id="darkGearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#1e293b" />
+                <stop offset="100%" stopColor="#0f172a" />
+              </linearGradient>
+              <linearGradient id="blueGearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#38bdf8" />
+                <stop offset="100%" stopColor="#0284c7" />
+              </linearGradient>
+            </defs>
 
-          {/* Connected Circuit & Schematic Lines */}
-          <g stroke="#38bdf8" strokeWidth="1.2" strokeOpacity="0.35" fill="none">
-            {/* Circuit traces */}
-            <path d="M 120 400 L 250 400 L 290 440 L 390 440" />
-            <path d="M 120 400 C 180 320 280 320 330 380" strokeDasharray="3 3" />
-            <path d="M 330 380 L 410 380 L 430 400" />
-            <path d="M 200 240 L 200 180 L 240 140 L 320 140" />
-
-            {/* Orbiting HUD Arc Guide */}
-            <circle cx="120" cy="400" r="190" strokeDasharray="6 6" strokeOpacity="0.25" />
-            <circle cx="120" cy="400" r="230" strokeOpacity="0.18" />
-
-            {/* Hexagonal Tech Decals */}
-            <polygon points="320,440 330,422 350,422 360,440 350,458 330,458" stroke="#38bdf8" strokeWidth="1.2" fill="rgba(15, 23, 42, 0.7)" />
-            <polygon points="365,470 372,458 388,458 395,470 388,482 372,482" stroke="#818cf8" strokeWidth="1" fill="rgba(15, 23, 42, 0.5)" />
-            <polygon points="410,440 418,426 434,426 442,440 434,454 418,454" stroke="#64748b" strokeWidth="1" fill="rgba(15, 23, 42, 0.4)" />
-          </g>
-
-          {/* Node Connection Dots */}
-          <g fill="#38bdf8">
-            <circle cx="250" cy="400" r="3.5" />
-            <circle cx="290" cy="440" r="4.5" />
-            <circle cx="390" cy="440" r="3.5" />
-            <circle cx="330" cy="380" r="3" />
-            <circle cx="410" cy="380" r="3.5" />
-            <circle cx="200" cy="180" r="3" />
-          </g>
-
-          {/* HUD Concentric Radar Arc 1 */}
-          <motion.g
-            style={{
-              originX: '120px',
-              originY: '400px',
-              rotate: shouldReduceMotion ? 0 : hudRing1Rotation,
-            }}
-          >
-            <circle
-              cx="120"
-              cy="400"
-              r="150"
-              fill="none"
-              stroke="#38bdf8"
-              strokeWidth="1.8"
-              strokeDasharray="40 18 10 18"
-              strokeOpacity="0.4"
-            />
-            <polygon points="120,246 113,258 127,258" fill="#38bdf8" transform="rotate(35 120 400)" />
-            <polygon points="120,246 113,258 127,258" fill="#38bdf8" transform="rotate(110 120 400)" />
-            <polygon points="120,246 113,258 127,258" fill="#38bdf8" transform="rotate(220 120 400)" />
-          </motion.g>
-
-          {/* HUD Concentric Radar Arc 2 */}
-          <motion.g
-            style={{
-              originX: '120px',
-              originY: '400px',
-              rotate: shouldReduceMotion ? 0 : hudRing2Rotation,
-            }}
-          >
-            <circle
-              cx="120"
-              cy="400"
-              r="175"
-              fill="none"
-              stroke="#64748b"
-              strokeWidth="1.5"
-              strokeDasharray="70 25 15 25"
-              strokeOpacity="0.4"
-            />
-            <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(20 120 400)" />
-            <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(40 120 400)" />
-            <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(60 120 400)" />
-            <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(80 120 400)" />
-          </motion.g>
-
-          {/* HUD Outer Track with Node */}
-          <motion.g
-            style={{
-              originX: '120px',
-              originY: '400px',
-              rotate: shouldReduceMotion ? 0 : hudRing3Rotation,
-            }}
-          >
-            <circle
-              cx="120"
-              cy="400"
-              r="205"
-              fill="none"
-              stroke="#475569"
-              strokeWidth="1"
-              strokeDasharray="4 8"
-              strokeOpacity="0.35"
-            />
-            <circle cx="120" cy="195" r="4.5" fill="#38bdf8" />
-          </motion.g>
-
-          {/* Orange Setting Gear */}
-          <motion.g
-            style={{
-              originX: '170px',
-              originY: '240px',
-              rotate: shouldReduceMotion ? 0 : orangeGearRotation,
-            }}
-          >
-            <g transform="translate(170, 240)">
-              <path
-                d={orangeGearPath}
-                fill="rgba(249, 115, 22, 0.18)"
-                stroke="#f97316"
-                strokeWidth="2.5"
-                strokeLinejoin="round"
-                filter="url(#subtleShadow)"
-              />
-              <circle cx="0" cy="0" r="12" fill="none" stroke="#f97316" strokeWidth="2" />
-              <circle cx="0" cy="0" r="4" fill="#fb923c" />
+            <g stroke="#38bdf8" strokeWidth="1.2" strokeOpacity="0.35" fill="none">
+              <path d="M 120 400 L 250 400 L 290 440 L 390 440" />
+              <path d="M 120 400 C 180 320 280 320 330 380" strokeDasharray="3 3" />
+              <path d="M 330 380 L 410 380 L 430 400" />
+              <path d="M 200 240 L 200 180 L 240 140 L 320 140" />
+              <circle cx="120" cy="400" r="190" strokeDasharray="6 6" strokeOpacity="0.25" />
+              <circle cx="120" cy="400" r="230" strokeOpacity="0.18" />
+              <polygon points="320,440 330,422 350,422 360,440 350,458 330,458" stroke="#38bdf8" strokeWidth="1.2" fill="rgba(15, 23, 42, 0.7)" />
+              <polygon points="365,470 372,458 388,458 395,470 388,482 372,482" stroke="#818cf8" strokeWidth="1" fill="rgba(15, 23, 42, 0.5)" />
+              <polygon points="410,440 418,426 434,426 442,440 434,454 418,454" stroke="#64748b" strokeWidth="1" fill="rgba(15, 23, 42, 0.4)" />
             </g>
-          </motion.g>
 
-          {/* Dark Titanium Setting Gear */}
-          <motion.g
-            style={{
-              originX: '340px',
-              originY: '410px',
-              rotate: shouldReduceMotion ? 0 : darkGearRotation,
-            }}
-          >
-            <g transform="translate(340, 410)">
-              <path
-                d={darkGearPath}
-                fill="url(#darkGearGrad)"
-                stroke="#64748b"
-                strokeWidth="2"
-                strokeLinejoin="round"
-                filter="url(#gearGlow)"
-              />
-              <circle cx="0" cy="0" r="32" fill="none" stroke="#38bdf8" strokeWidth="1.5" strokeDasharray="4 2" strokeOpacity="0.6" />
-              <circle cx="0" cy="0" r="18" fill="#0f172a" stroke="#475569" strokeWidth="1.5" />
-              <circle cx="0" cy="0" r="7" fill="#38bdf8" />
+            <g fill="#38bdf8">
+              <circle cx="250" cy="400" r="3.5" />
+              <circle cx="290" cy="440" r="4.5" />
+              <circle cx="390" cy="440" r="3.5" />
+              <circle cx="330" cy="380" r="3" />
+              <circle cx="410" cy="380" r="3.5" />
+              <circle cx="200" cy="180" r="3" />
             </g>
-          </motion.g>
 
-          {/* Sky Blue Gear */}
-          <motion.g
-            style={{
-              originX: '210px',
-              originY: '510px',
-              rotate: shouldReduceMotion ? 0 : blueGearRotation,
-            }}
-          >
-            <g transform="translate(210, 510)">
-              <path
-                d={blueGearPath}
-                fill="url(#blueGearGrad)"
-                stroke="#38bdf8"
-                strokeWidth="1.5"
-                strokeLinejoin="round"
-                filter="url(#gearGlow)"
-              />
-              <circle cx="0" cy="0" r="7" fill="#f8fafc" />
-            </g>
-          </motion.g>
+            <motion.g
+              style={{
+                originX: '120px',
+                originY: '400px',
+                rotate: shouldReduceMotion ? 0 : hudRing1Rotation,
+              }}
+            >
+              <circle cx="120" cy="400" r="150" fill="none" stroke="#38bdf8" strokeWidth="1.8" strokeDasharray="40 18 10 18" strokeOpacity="0.4" />
+              <polygon points="120,246 113,258 127,258" fill="#38bdf8" transform="rotate(35 120 400)" />
+              <polygon points="120,246 113,258 127,258" fill="#38bdf8" transform="rotate(110 120 400)" />
+              <polygon points="120,246 113,258 127,258" fill="#38bdf8" transform="rotate(220 120 400)" />
+            </motion.g>
 
-          {/* Primary Large Mechanical Gear */}
-          <motion.g
-            style={{
-              originX: '120px',
-              originY: '400px',
-              rotate: shouldReduceMotion ? 0 : mainGearRotation,
-            }}
-          >
-            <g transform="translate(120, 400)">
-              <path
-                d={mainGearPath}
-                fill="url(#mainGearGrad)"
-                stroke="#475569"
-                strokeWidth="2.5"
-                strokeLinejoin="round"
-                filter="url(#gearGlow)"
-              />
-              {[0, 60, 120, 180, 240, 300].map((deg) => (
-                <line
-                  key={deg}
-                  x1="0"
-                  y1="-38"
-                  x2="0"
-                  y2="-88"
-                  stroke="#475569"
-                  strokeWidth="3.5"
-                  strokeLinecap="round"
-                  transform={`rotate(${deg})`}
-                />
-              ))}
-              {[0, 60, 120, 180, 240, 300].map((deg) => (
-                <line
-                  key={`acc-${deg}`}
-                  x1="0"
-                  y1="-44"
-                  x2="0"
-                  y2="-82"
-                  stroke="#38bdf8"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeOpacity="0.7"
-                  transform={`rotate(${deg})`}
-                />
-              ))}
-              <circle cx="0" cy="0" r="38" fill="url(#mainGearGrad)" stroke="#475569" strokeWidth="2.5" />
-              <circle cx="0" cy="0" r="22" fill="#0f172a" stroke="#38bdf8" strokeWidth="2" />
-              <circle cx="0" cy="0" r="8" fill="#38bdf8" />
-            </g>
-          </motion.g>
-        </svg>
-      </motion.div>
+            <motion.g
+              style={{
+                originX: '120px',
+                originY: '400px',
+                rotate: shouldReduceMotion ? 0 : hudRing2Rotation,
+              }}
+            >
+              <circle cx="120" cy="400" r="175" fill="none" stroke="#64748b" strokeWidth="1.5" strokeDasharray="70 25 15 25" strokeOpacity="0.4" />
+              <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(20 120 400)" />
+              <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(40 120 400)" />
+              <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(60 120 400)" />
+              <line x1="120" y1="220" x2="120" y2="230" stroke="#94a3b8" strokeWidth="1.5" transform="rotate(80 120 400)" />
+            </motion.g>
 
-      {/* 7. Balanced Top-Right Floating Tech Gear Accent */}
-      <motion.div
-        style={{
-          position: 'absolute',
-          top: '40px',
-          right: '-20px',
-          width: '260px',
-          height: '260px',
-          opacity: 0.55,
-          y: shouldReduceMotion ? 0 : parallaxY,
-          transformOrigin: 'top right',
-        }}
-      >
-        <svg viewBox="0 0 260 260" width="100%" height="100%" style={{ overflow: 'visible' }}>
-          <motion.g
-            style={{
-              originX: '130px',
-              originY: '110px',
-              rotate: shouldReduceMotion ? 0 : trGear1Rotation,
-            }}
-          >
-            <g transform="translate(130, 110)">
-              <path
-                d={miniGearPath}
-                fill="rgba(30, 41, 59, 0.7)"
-                stroke="#64748b"
-                strokeWidth="1.8"
-                strokeLinejoin="round"
-              />
-              <circle cx="0" cy="0" r="10" fill="#0f172a" stroke="#38bdf8" strokeWidth="1.5" />
-            </g>
-          </motion.g>
+            <motion.g
+              style={{
+                originX: '120px',
+                originY: '400px',
+                rotate: shouldReduceMotion ? 0 : hudRing3Rotation,
+              }}
+            >
+              <circle cx="120" cy="400" r="205" fill="none" stroke="#475569" strokeWidth="1" strokeDasharray="4 8" strokeOpacity="0.35" />
+              <circle cx="120" cy="195" r="4.5" fill="#38bdf8" />
+            </motion.g>
 
-          <motion.g
-            style={{
-              originX: '195px',
-              originY: '165px',
-              rotate: shouldReduceMotion ? 0 : trGear2Rotation,
-            }}
-          >
-            <g transform="translate(195, 165)">
-              <path
-                d={orangeGearPath}
-                fill="none"
-                stroke="#f97316"
-                strokeWidth="1.8"
-                strokeLinejoin="round"
-                strokeOpacity="0.8"
-              />
-              <circle cx="0" cy="0" r="8" fill="#0f172a" stroke="#f97316" strokeWidth="1.2" />
-            </g>
-          </motion.g>
+            <motion.g
+              style={{
+                originX: '170px',
+                originY: '240px',
+                rotate: shouldReduceMotion ? 0 : orangeGearRotation,
+              }}
+            >
+              <g transform="translate(170, 240)">
+                <path d={orangeGearPath} fill="rgba(249, 115, 22, 0.18)" stroke="#f97316" strokeWidth="2.5" strokeLinejoin="round" filter="url(#subtleShadow)" />
+                <circle cx="0" cy="0" r="12" fill="none" stroke="#f97316" strokeWidth="2" />
+                <circle cx="0" cy="0" r="4" fill="#fb923c" />
+              </g>
+            </motion.g>
 
-          <circle cx="130" cy="110" r="75" fill="none" stroke="#38bdf8" strokeWidth="1" strokeDasharray="4 4" strokeOpacity="0.3" />
-        </svg>
-      </motion.div>
+            <motion.g
+              style={{
+                originX: '340px',
+                originY: '410px',
+                rotate: shouldReduceMotion ? 0 : darkGearRotation,
+              }}
+            >
+              <g transform="translate(340, 410)">
+                <path d={darkGearPath} fill="url(#darkGearGrad)" stroke="#64748b" strokeWidth="2" strokeLinejoin="round" filter="url(#gearGlow)" />
+                <circle cx="0" cy="0" r="32" fill="none" stroke="#38bdf8" strokeWidth="1.5" strokeDasharray="4 2" strokeOpacity="0.6" />
+                <circle cx="0" cy="0" r="18" fill="#0f172a" stroke="#475569" strokeWidth="1.5" />
+                <circle cx="0" cy="0" r="7" fill="#38bdf8" />
+              </g>
+            </motion.g>
+
+            <motion.g
+              style={{
+                originX: '210px',
+                originY: '510px',
+                rotate: shouldReduceMotion ? 0 : blueGearRotation,
+              }}
+            >
+              <g transform="translate(210, 510)">
+                <path d={blueGearPath} fill="url(#blueGearGrad)" stroke="#38bdf8" strokeWidth="1.5" strokeLinejoin="round" filter="url(#gearGlow)" />
+                <circle cx="0" cy="0" r="7" fill="#f8fafc" />
+              </g>
+            </motion.g>
+
+            <motion.g
+              style={{
+                originX: '120px',
+                originY: '400px',
+                rotate: shouldReduceMotion ? 0 : mainGearRotation,
+              }}
+            >
+              <g transform="translate(120, 400)">
+                <path d={mainGearPath} fill="url(#mainGearGrad)" stroke="#475569" strokeWidth="2.5" strokeLinejoin="round" filter="url(#gearGlow)" />
+                {[0, 60, 120, 180, 240, 300].map((deg) => (
+                  <line key={deg} x1="0" y1="-38" x2="0" y2="-88" stroke="#475569" strokeWidth="3.5" strokeLinecap="round" transform={`rotate(${deg})`} />
+                ))}
+                {[0, 60, 120, 180, 240, 300].map((deg) => (
+                  <line key={`acc-${deg}`} x1="0" y1="-44" x2="0" y2="-82" stroke="#38bdf8" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.7" transform={`rotate(${deg})`} />
+                ))}
+                <circle cx="0" cy="0" r="38" fill="url(#mainGearGrad)" stroke="#475569" strokeWidth="2.5" />
+                <circle cx="0" cy="0" r="22" fill="#0f172a" stroke="#38bdf8" strokeWidth="2" />
+                <circle cx="0" cy="0" r="8" fill="#38bdf8" />
+              </g>
+            </motion.g>
+          </svg>
+        </motion.div>
+
+        {/* Top-Right Accent */}
+        <motion.div
+          style={{
+            position: 'absolute',
+            top: '40px',
+            right: '-20px',
+            width: '260px',
+            height: '260px',
+            opacity: 0.55,
+            y: shouldReduceMotion ? 0 : parallaxY,
+            transformOrigin: 'top right',
+          }}
+        >
+          <svg viewBox="0 0 260 260" width="100%" height="100%" style={{ overflow: 'visible' }}>
+            <motion.g
+              style={{
+                originX: '130px',
+                originY: '110px',
+                rotate: shouldReduceMotion ? 0 : trGear1Rotation,
+              }}
+            >
+              <g transform="translate(130, 110)">
+                <path d={miniGearPath} fill="rgba(30, 41, 59, 0.7)" stroke="#64748b" strokeWidth="1.8" strokeLinejoin="round" />
+                <circle cx="0" cy="0" r="10" fill="#0f172a" stroke="#38bdf8" strokeWidth="1.5" />
+              </g>
+            </motion.g>
+
+            <motion.g
+              style={{
+                originX: '195px',
+                originY: '165px',
+                rotate: shouldReduceMotion ? 0 : trGear2Rotation,
+              }}
+            >
+              <g transform="translate(195, 165)">
+                <path d={orangeGearPath} fill="none" stroke="#f97316" strokeWidth="1.8" strokeLinejoin="round" strokeOpacity="0.8" />
+                <circle cx="0" cy="0" r="8" fill="#0f172a" stroke="#f97316" strokeWidth="1.2" />
+              </g>
+            </motion.g>
+
+            <circle cx="130" cy="110" r="75" fill="none" stroke="#38bdf8" strokeWidth="1" strokeDasharray="4 4" strokeOpacity="0.3" />
+          </svg>
+        </motion.div>
+      </div>
     </div>
   );
 }
-
