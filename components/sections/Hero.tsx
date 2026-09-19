@@ -49,7 +49,7 @@ export function Hero() {
             </StaggerItem>
 
             {/* Status Badge */}
-            <StaggerItem className="depth-layer-2">
+            <StaggerItem className="depth-layer-3">
               <div className="hero-status-pill">
                 <span className="status-dot"></span>
                 <span>Available for Software Engineering & AI Collaborations</span>
@@ -57,22 +57,22 @@ export function Hero() {
             </StaggerItem>
 
             {/* Hero Name */}
-            <StaggerItem className="depth-layer-3">
+            <StaggerItem className="depth-layer-4">
               <h1 className="hero-title">{personalInfo.name}</h1>
             </StaggerItem>
 
             {/* Specialization Tags */}
-            <StaggerItem className="depth-layer-2">
+            <StaggerItem className="depth-layer-3">
               <div className="hero-tags">
-                <span className="tech-tag tag-primary">
+                <span className="tech-tag tag-primary depth-layer-3">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
                   Software Engineering
                 </span>
-                <span className="tech-tag tag-cyan">
+                <span className="tech-tag tag-cyan depth-layer-3">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12L2.5 7.5"></path><path d="M12 12v10"></path></svg>
                   Prompt Engineering
                 </span>
-                <span className="tech-tag tag-purple">
+                <span className="tech-tag tag-purple depth-layer-3">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
                   Data Analysis
                 </span>
@@ -80,7 +80,7 @@ export function Hero() {
             </StaggerItem>
 
             {/* Location */}
-            <StaggerItem className="depth-layer-1">
+            <StaggerItem className="depth-layer-2">
               <p className="hero-location">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                 {personalInfo.location}
@@ -88,12 +88,12 @@ export function Hero() {
             </StaggerItem>
 
             {/* Introduction */}
-            <StaggerItem className="depth-layer-1">
+            <StaggerItem className="depth-layer-2">
               <p className="hero-intro">{personalInfo.introduction}</p>
             </StaggerItem>
 
             {/* Call to Action Group */}
-            <StaggerItem className="cta-group depth-layer-3">
+            <StaggerItem className="cta-group depth-layer-4">
               <Button onClick={scrollToProjects} className="btn-glowing">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
                 Explore Projects

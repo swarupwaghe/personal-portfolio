@@ -24,17 +24,16 @@ export function SpatialCard({
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Responsive spring physics for hyper-smooth 3D tilt
-  const mouseXSpring = useSpring(x, { stiffness: 220, damping: 20 });
-  const mouseYSpring = useSpring(y, { stiffness: 220, damping: 20 });
+  // Responsive physics spring for ultra-smooth 3D tilt
+  const mouseXSpring = useSpring(x, { stiffness: 280, damping: 22 });
+  const mouseYSpring = useSpring(y, { stiffness: 280, damping: 22 });
 
   // Map mouse offsets to rotateX and rotateY
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], [depth, -depth]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], [-depth, depth]);
 
-  // Dynamic 3D shadow offset based on tilt
-  const shadowX = useTransform(mouseXSpring, [-0.5, 0.5], [20, -20]);
-  const shadowY = useTransform(mouseYSpring, [-0.5, 0.5], [20, -20]);
+  // Dynamic 3D scale elevation on hover tilt
+  const scale = useTransform(mouseXSpring, [-0.5, 0, 0.5], [1.015, 1.02, 1.015]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
@@ -49,7 +48,7 @@ export function SpatialCard({
     x.set(xPct);
     y.set(yPct);
 
-    // CSS Custom Variables mutation for glare and 3D shadow position
+    // CSS Custom Variables mutation for glare spot and 3D shadow position
     const glareX = Math.round((mouseX / rect.width) * 100);
     const glareY = Math.round((mouseY / rect.height) * 100);
     ref.current.style.setProperty('--glare-x', `${glareX}%`);
@@ -83,6 +82,7 @@ export function SpatialCard({
       style={{
         rotateX,
         rotateY,
+        scale,
         transformStyle: 'preserve-3d',
         perspective: 1200,
         willChange: 'transform',
@@ -106,4 +106,5 @@ export function SpatialCard({
     </motion.div>
   );
 }
+
 

@@ -451,6 +451,89 @@ a:hover {
 .hud-corner.bottom-left { bottom: 10px; left: 14px; }
 .hud-corner.bottom-right { bottom: 10px; right: 14px; }
 
+/* Floating 3D Spatial Badges around Hero 3D Orb */
+.hero-3d-floating-badge {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: rgba(10, 18, 30, 0.75);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  color: #f8fafc;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  z-index: 10;
+}
+
+.hero-card-frame:hover .hero-3d-floating-badge {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 189, 248, 0.3);
+}
+
+.badge-top-left {
+  top: 10px;
+  left: 12%;
+  transform: translateZ(60px) rotate(-3deg);
+}
+
+.badge-top-right {
+  top: 10px;
+  right: 12%;
+  transform: translateZ(60px) rotate(3deg);
+}
+
+.badge-bottom-left {
+  bottom: 25px;
+  left: 10%;
+  transform: translateZ(45px) rotate(-2deg);
+}
+
+.badge-bottom-right {
+  bottom: 25px;
+  right: 10%;
+  transform: translateZ(45px) rotate(2deg);
+}
+
+@media (max-width: 768px) {
+  .hero-3d-floating-badge {
+    display: none;
+  }
+}
+
+.badge-glow-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.badge-glow-dot.cyan {
+  background: #38bdf8;
+  box-shadow: 0 0 10px #38bdf8;
+}
+
+.badge-glow-dot.purple {
+  background: #c084fc;
+  box-shadow: 0 0 10px #c084fc;
+}
+
+.badge-glow-dot.emerald {
+  background: #34d399;
+  box-shadow: 0 0 10px #34d399;
+}
+
+.badge-glow-dot.blue {
+  background: #60a5fa;
+  box-shadow: 0 0 10px #60a5fa;
+}
+
 /* Status Pill */
 .hero-status-pill {
   display: inline-flex;
@@ -458,13 +541,14 @@ a:hover {
   gap: 8px;
   padding: 6px 16px;
   border-radius: 9999px;
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
   color: #34d399;
   font-size: var(--font-size-sm);
   font-weight: 600;
   margin-bottom: var(--space-4);
   letter-spacing: 0.02em;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
 }
 
 .status-dot {

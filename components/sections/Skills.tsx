@@ -29,16 +29,16 @@ export function Skills() {
             const Icon = categoryIconMap[category] || Code2;
             return (
               <StaggerItem key={category}>
-                <SpatialCard className="skill-category-card" depth={12}>
-                  <div className="depth-layer-2" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <div style={{ padding: '6px', borderRadius: '8px', background: 'rgba(56, 189, 248, 0.12)', border: '1px solid rgba(56, 189, 248, 0.3)', color: '#38bdf8' }}>
-                      <Icon size={18} />
+                <SpatialCard className="skill-category-card" depth={14}>
+                  <div className="depth-layer-3" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="depth-layer-4" style={{ padding: '8px', borderRadius: '10px', background: 'rgba(56, 189, 248, 0.14)', border: '1px solid rgba(56, 189, 248, 0.35)', color: '#38bdf8', boxShadow: '0 0 15px rgba(56, 189, 248, 0.25)' }}>
+                      <Icon size={20} />
                     </div>
-                    <h3 style={{ margin: 0 }}>{category}</h3>
+                    <h3 className="depth-layer-3" style={{ margin: 0 }}>{category}</h3>
                   </div>
-                  <div className="skills-list depth-layer-3" style={{ marginTop: '16px' }}>
+                  <div className="skills-list depth-layer-3" style={{ marginTop: '18px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                     {skills.filter(s => s.category === category).map(skill => (
-                      <Badge key={skill.name} className="skill-badge depth-layer-2">
+                      <Badge key={skill.name} className="skill-badge depth-layer-3">
                         {skill.name} {skill.reference ? `(${skill.reference})` : ''}
                       </Badge>
                     ))}

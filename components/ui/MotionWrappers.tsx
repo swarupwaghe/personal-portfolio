@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import React from 'react';
 
-export function FadeIn({ children, className, delay = 0 }: { children: React.ReactNode, className?: string, delay?: number }) {
+export function FadeIn({ children, className, delay = 0, style }: { children: React.ReactNode, className?: string, delay?: number, style?: React.CSSProperties }) {
   const shouldReduceMotion = useReducedMotion();
   return (
     <motion.div
@@ -12,13 +12,14 @@ export function FadeIn({ children, className, delay = 0 }: { children: React.Rea
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay }}
       className={className}
+      style={style}
     >
       {children}
     </motion.div>
   );
 }
 
-export function StaggerContainer({ children, className }: { children: React.ReactNode, className?: string }) {
+export function StaggerContainer({ children, className, style }: { children: React.ReactNode, className?: string, style?: React.CSSProperties }) {
   const shouldReduceMotion = useReducedMotion();
   
   const container = {
@@ -38,13 +39,14 @@ export function StaggerContainer({ children, className }: { children: React.Reac
       whileInView="show"
       viewport={{ once: true, margin: "-50px" }}
       className={className}
+      style={style}
     >
       {children}
     </motion.div>
   );
 }
 
-export function StaggerItem({ children, className }: { children: React.ReactNode, className?: string }) {
+export function StaggerItem({ children, className, style }: { children: React.ReactNode, className?: string, style?: React.CSSProperties }) {
   const shouldReduceMotion = useReducedMotion();
   
   const item = {
@@ -53,7 +55,7 @@ export function StaggerItem({ children, className }: { children: React.ReactNode
   };
 
   return (
-    <motion.div variants={item} className={className}>
+    <motion.div variants={item} className={className} style={style}>
       {children}
     </motion.div>
   );
